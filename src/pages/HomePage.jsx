@@ -1,10 +1,10 @@
 import React from 'react';
+import ProductList from '../component/prodictlist';
 
 const HomePage = () => {
     return (
         <div>
-            <h1>Welcome to the Clothing Store</h1>
-            {/* Add homepage content here */}
+           <ProductList/>
         </div>
     );
 };
