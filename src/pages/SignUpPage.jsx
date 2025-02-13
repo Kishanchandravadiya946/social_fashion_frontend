@@ -66,7 +66,7 @@ const SignUp = () => {
           password: "",
           confirmPassword: "",
         });
-        setTimeout(() => navigate("/signin"), 1000);
+        setTimeout(() => navigate("/login"), 1000);
       } else {
         setError(data.error || "Something went wrong.");
       }  
@@ -85,7 +85,7 @@ const SignUp = () => {
         </h1>
 
         <div className="flex justify-center space-x-8 mb-6">
-          <a href="/signin">
+          <a href="/login">
             <button className="text-gray-300 pb-1 hover:text-white">
               Sign In
             </button>
