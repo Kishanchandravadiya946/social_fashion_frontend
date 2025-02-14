@@ -31,9 +31,10 @@ export default function CreateCategory() {
     setError(null);
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://127.0.0.1:5050/product_category/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { Authorization: `Bearer ${token}`,"Content-Type": "application/json" },
         body: JSON.stringify({
           category_name: categoryName,
           parent_category_id: parentCategory || null,

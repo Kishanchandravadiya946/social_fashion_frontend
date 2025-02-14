@@ -31,16 +31,16 @@ const SignIn = () => {
             });
     
             const data = await response.json();
-    
+            console.log(data)
             if (response.ok) {
+                localStorage.setItem("token", data.access_token);
+                console.log(data)
                 setTimeout(() => navigate("/"), 1000);
             }
             else {
                 setError(data.error || "Something went wrong.");
             }  
     
-            // Store auth token (if any)
-            // localStorage.setItem("token", data.token);
             
         } catch (err) {
             setError(err.message);

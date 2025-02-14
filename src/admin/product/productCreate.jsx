@@ -40,8 +40,10 @@ export default function CreateProduct() {
     if (productImage) formData.append("product_image", productImage);
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://127.0.0.1:5050/product/create", {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
