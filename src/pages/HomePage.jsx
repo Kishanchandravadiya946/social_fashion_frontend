@@ -1,14 +1,13 @@
 import React from 'react';
-import ProductList from '../component/prodictlist';
-import  AdminDashboard   from '../admin/home'
-
-const HomePage = () => {
+import  AdminDashboard   from '../admin/adminHome'
+import HomeDashboard from '../user/userDashboard';
+export default function HomePage () {
     return (
         <div>
-           {/* <ProductList/> */}
-           <AdminDashboard/>
+            <AdminDashboard/>
+           {/* <HomeDashboard/>     */}
         </div>
     );
 };
 
-export default HomePage;
+

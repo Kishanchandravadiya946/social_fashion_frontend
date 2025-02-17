@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Loader2, AlertCircle, Home, Box, List, Package, LogOut } from "lucide-react";
 
-import AdminDashboard from "../home";
+import AdminDashboard from "../adminHome"
 export default function CreateCategory() {
   const [categoryName, setCategoryName] = useState("");
   const [parentCategory, setParentCategory] = useState(null);

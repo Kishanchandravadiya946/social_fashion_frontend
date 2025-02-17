@@ -22,23 +22,44 @@ export default function ProductList() {
   }, []);
 
   return (
-    <div className="flex flex-col  min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 p-8">
-      <button
-        onClick={() => navigate("/admin/create-product")}
-        className="mb-6 bg-green-400 text-black font-semibold py-3 px-6 rounded-full hover:bg-green-500"
-      >
-        + Create New Product
-      </button>
+    <div className="flex flex-col min-h-screen bg-gray-100 p-8">
+  {/* Header Section */}
+  <div className="flex justify-between items-center mb-8">
+    <h2 className="text-3xl font-bold text-gray-800">Product List</h2>
+    <button
+      onClick={() => navigate("/admin/create-product")}
+      className="bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-200 shadow-md"
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <div key={product.id} className="bg-white p-4 rounded-lg shadow-lg">
-            <img src={product.product_image || "https://via.placeholder.com/150"} alt={product.name} className="w-full h-48 object-cover rounded-md" />
-            <h3 className="text-xl font-bold mt-2">{product.name}</h3>
-            <p className="text-gray-600">{product.description}</p>
-          </div>
-        ))}
+    >
+      + Create New Product
+    </button>
+  </div>
+
+  {/* Product Grid */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+    {products.map((product) => (
+      <div
+        key={product.id}
+        className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+      >
+        <img
+          src={product.product_image || "https://via.placeholder.com/300"}
+          alt={product.name}
+          className="w-full h-48 object-cover rounded-md"
+        />
+        <h3 className="text-xl font-bold mt-3 text-gray-800">{product.name}</h3>
+        <p className="text-gray-600 mt-1 line-clamp-2">{product.description}</p>
+        <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+          View Details
+        </button>
       </div>
-    </div>
+    ))}
+  </div>
+
+  {/* No Products Message */}
+  {products.length === 0 && (
+    <p className="text-center text-gray-800 text-lg mt-10">No products available.</p>
+  )}
+</div>
   );
 }
