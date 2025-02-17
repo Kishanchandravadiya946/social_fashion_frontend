@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ProductItemModal from "./productItemCreate";
 
 export default function ProductItemPage() {
   const [productItems, setProductItems] = useState([]);
+  const [isProductItemOpen,setProductItemOpen]=useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,10 +22,11 @@ export default function ProductItemPage() {
         <div className="flex justify-between mb-4">
           <button
             className="bg-green-400 text-black font-semibold py-2 px-4 rounded-full hover:bg-green-500"
-            onClick={() => navigate("/admin/create-product-item")}
+            onClick={() => setProductItemOpen(true)}
           >
             +Create Product Item
           </button>
+          <ProductItemModal isOpen={isProductItemOpen} onClose={() => setProductItemOpen(false)} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

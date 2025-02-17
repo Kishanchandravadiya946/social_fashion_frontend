@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function ProductItemCreate() {
+export default function ProductItemModal({ isOpen, onClose }) {
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState("");
   const [SKU, setSKU] = useState("");
@@ -10,9 +9,10 @@ export default function ProductItemCreate() {
   const [productImage, setProductImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isOpen) return;
+    
     const fetchProducts = async () => {
       try {
         const response = await fetch("http://127.0.0.1:5050/product/list");
@@ -23,13 +23,13 @@ export default function ProductItemCreate() {
       }
     };
     fetchProducts();
-  }, []);
+  }, [isOpen]);
 
   const handleCreateProductItem = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     const formData = new FormData();
     formData.append("product_id", productId);
     formData.append("SKU", SKU);
@@ -48,7 +48,7 @@ export default function ProductItemCreate() {
       if (!response.ok) {
         throw new Error("Failed to create product item");
       }
-    //   navigate("/product-items");
+      onClose();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -56,18 +56,18 @@ export default function ProductItemCreate() {
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-900 to-blue-700">
-      <div className="bg-opacity-20 bg-gray-100 p-8 rounded-xl shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-white text-center mb-4">
-          CREATE PRODUCT ITEM
-        </h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 className="text-xl font-bold text-center mb-4">Create Product Item</h2>
 
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         <form onSubmit={handleCreateProductItem} className="space-y-4">
           <select
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg"
             value={productId}
             onChange={(e) => setProductId(e.target.value)}
             required
@@ -83,7 +83,7 @@ export default function ProductItemCreate() {
             placeholder="SKU"
             value={SKU}
             onChange={(e) => setSKU(e.target.value)}
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg"
             required
           />
 
@@ -92,7 +92,7 @@ export default function ProductItemCreate() {
             placeholder="Quantity in Stock"
             value={qtyInStock}
             onChange={(e) => setQtyInStock(e.target.value)}
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg"
             required
           />
 
@@ -101,7 +101,7 @@ export default function ProductItemCreate() {
             placeholder="Price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg"
             required
           />
 
@@ -109,16 +109,25 @@ export default function ProductItemCreate() {
             type="file"
             accept="image/*"
             onChange={(e) => setProductImage(e.target.files[0])}
-            className="w-full text-white bg-black bg-opacity-20 p-2 rounded-lg"
+            className="w-full text-gray-700 border p-2 rounded-lg"
           />
 
-          <button
-            type="submit"
-            className="w-full bg-green-400 text-black font-semibold py-3 rounded-full hover:bg-green-500 disabled:bg-gray-400"
-            disabled={loading}
-          >
-            {loading ? "Creating..." : "Create Product Item"}
-          </button>
+          <div className="flex justify-between">
+            <button
+              type="button"
+              className="px-4 py-2 bg-gray-300 rounded-lg"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
+              disabled={loading}
+            >
+              {loading ? "Creating..." : "Create"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

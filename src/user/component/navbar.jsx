@@ -1,8 +1,12 @@
 import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
-  const navigate=useNavigate()
+const Navbar = ({ user_id }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/logout");
+  };
+
   return (
     <nav className="flex justify-between items-center p-4 bg-white shadow-md">
       <div className="text-xl font-bold">SOCIAL FASHION</div>
@@ -13,8 +17,17 @@ const Navbar = () => {
       </ul>
       <div className="flex gap-4">
         <FaShoppingCart className="text-xl cursor-pointer" />
-        <button onClick={()=>navigate("/login")}
-        className="border px-4 py-1 rounded-full hover:bg-black hover:text-white">Login</button>
+        {user_id ? (
+          <button onClick={handleLogout}
+            className="border px-4 py-1 rounded-full hover:bg-black hover:text-white">
+            Logout
+          </button>
+        ) : (
+          <button onClick={() => navigate("/login")}
+            className="border px-4 py-1 rounded-full hover:bg-black hover:text-white">
+            Login
+          </button>
+        )}
       </div>
     </nav>
   );

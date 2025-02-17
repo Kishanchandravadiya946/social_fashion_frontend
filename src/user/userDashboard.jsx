@@ -4,10 +4,11 @@ import FeaturedProducts from "./component/featuredproducts";
 import AboutUs from "./component/aboutUs";
 import Footer from "./component/footer";
 
-const HomeDashboard = () => {
+const HomeDashboard = ({user_id}) => {
+  // console.log(user_id);
   return (
     <div>
-      <Navbar />
+      <Navbar user_id={user_id}/>
       <SocialSection />
       <FeaturedProducts />
       <AboutUs />

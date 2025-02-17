@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import CreateProductModal from "./productCreate";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +26,13 @@ export default function ProductList() {
 
   return (
     <div className="flex flex-col  min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 p-8">
-      <button
-        onClick={() => navigate("/admin/create-product")}
+       <button
+        onClick={() => setIsModalOpen(true)}
         className="mb-6 bg-green-400 text-black font-semibold py-3 px-6 rounded-full hover:bg-green-500"
       >
         + Create New Product
       </button>
+      {isModalOpen && <CreateProductModal onClose={() => setIsModalOpen(false)} />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CreateCategory from "./productCategoryCreate";
 
 export default function ProductCategoryList() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
   const navigate = useNavigate(); // Use navigate instead of <Link>
 
   useEffect(() => {
@@ -34,12 +36,11 @@ export default function ProductCategoryList() {
     <div className="max-w-5xl mx-auto bg-white shadow-lg p-6 rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Product Categories</h2>
-        <button
-          onClick={() => navigate("/admin/create-category")} // Navigate programmatically
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          + Create New Category
-        </button>
+        <button onClick={() => setCategoryModalOpen(true)} className="mb-6 bg-blue-400 text-black py-3 px-6 rounded-full">
+        + Create New Category
+      </button>
+      <CreateCategory isOpen={isCategoryModalOpen} onClose={() => setCategoryModalOpen(false)} />
+
       </div>
 
       {loading ? (

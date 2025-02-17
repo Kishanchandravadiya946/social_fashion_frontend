@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function CreateProduct() {
+export default function CreateProductModal({ onClose }) {
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [name, setName] = useState("");
@@ -9,7 +8,6 @@ export default function CreateProduct() {
   const [productImage, setProductImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -25,7 +23,6 @@ export default function CreateProduct() {
       }
     };
     fetchCategories();
-    // print(categories)
   }, []);
 
   const handleCreateProduct = async (e) => {
@@ -51,7 +48,7 @@ export default function CreateProduct() {
         throw new Error("Failed to create product");
       }
 
-    //   navigate("/products"); // Redirect after success
+      onClose(); // Close the modal after success
     } catch (err) {
       setError(err.message);
     } finally {
@@ -60,30 +57,26 @@ export default function CreateProduct() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-900 to-blue-700">
-      <div className="bg-opacity-20 bg-gray-100 p-8 rounded-xl shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-white text-center mb-4">
-          CREATE PRODUCT
-        </h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-900">
+          ✖
+        </button>
 
-        {/* <div className="flex justify-center mb-4">
-          <span className="text-white cursor-pointer" onClick={() => navigate("/products")}>
-            Back
-          </span>
-        </div> */}
+        <h2 className="text-2xl font-bold text-center mb-4">CREATE PRODUCT</h2>
 
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         <form onSubmit={handleCreateProduct} className="space-y-4">
           <select
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             required
           >
             <option value="">Select Category</option>
             {categories.map((category) => (
-              <option key={category._id} value={category._id}>
+              <option key={category.id} value={category.id}>
                 {category.category_name}
               </option>
             ))}
@@ -94,7 +87,7 @@ export default function CreateProduct() {
             placeholder="Product Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white placeholder-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
             required
           />
 
@@ -102,19 +95,19 @@ export default function CreateProduct() {
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white placeholder-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
           />
 
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setProductImage(e.target.files[0])}
-            className="w-full px-4 py-3 bg-black bg-opacity-20 text-white rounded-lg focus:outline-none"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
           />
 
           <button
             type="submit"
-            className="w-full bg-green-400 text-black font-semibold py-3 rounded-full hover:bg-green-500 disabled:bg-gray-400"
+            className="w-full bg-green-500 text-white font-semibold py-2 rounded-lg hover:bg-green-600 disabled:bg-gray-400"
             disabled={loading}
           >
             {loading ? "Creating..." : "Create Product"}

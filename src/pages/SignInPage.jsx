@@ -29,12 +29,12 @@ const SignIn = () => {
                     password: password,
                 }),
             });
-    
+            // console.log("object");
             const data = await response.json();
-            console.log(data)
             if (response.ok) {
                 localStorage.setItem("token", data.access_token);
-                console.log(data)
+                localStorage.setItem("user_id", data.user_id);
+                // console.log(data)
                 setTimeout(() => navigate("/"), 1000);
             }
             else {
