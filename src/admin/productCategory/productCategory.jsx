@@ -21,6 +21,7 @@ export default function ProductCategoryList() {
         }
 
         const data = await response.json();
+        // console.log(data);
         setCategories(data);
       } catch (err) {
         setError("Failed to fetch categories. Please try again.");

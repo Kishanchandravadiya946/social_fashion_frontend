@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link ,useNavigate} from "react-router-dom";
-import { Home, Box, List, Package,LogOutIcon } from "lucide-react";
+import { Home, Box, List, Package,LogOutIcon, TvIcon, Laptop2Icon } from "lucide-react";
 import ProductCategoryList from "./productCategory/productCategory";
 import ProductList from "./product/product";
 import ProductItemPage from "./productItem/productItem";
 import Logout from "../pages/Logout";
+import VariationList from "./variation/variationList";
+import VariationOptionList from "./variation_option/variationOptionList";
 
 export default function AdminDashboard() {
   const [active, setActive] = useState("Home");
@@ -15,7 +17,9 @@ export default function AdminDashboard() {
     { name: "Product Category", icon: List, link: "/product-category", component: ProductCategoryList },
     { name: "Product", icon: Box, link: "/product", component: ProductList },
     { name: "Product Item", icon: Package, link: "/product-item", component: ProductItemPage },
-    {name:"Logout",icon:LogOutIcon,link:"/logout",component:Logout}
+    {name:"Variation",icon:TvIcon,link:"/variation",component:VariationList},
+    {name:"Variation Option",icon:Laptop2Icon,link:"/variation-option",component:VariationOptionList},
+    {name:"Logout",icon:LogOutIcon,link:"/logout",component:Logout},
   ];
 
   const ActiveComponent = menuItems.find((item) => {

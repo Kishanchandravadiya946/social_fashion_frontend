@@ -10,10 +10,10 @@ export default function ProductItemPage() {
   useEffect(() => {
     fetch("http://127.0.0.1:5050/product_item/list")
       .then((response) => response.json())
-      .then((data) => setProductItems(data))
+      .then( (data) => setProductItems(data))
       .catch((error) => console.error("Error fetching product items:", error));
   }, []);
-
+// console.log(productItems);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-900 to-blue-700">
       <div className="bg-opacity-20 bg-gray-100 p-8 rounded-xl shadow-lg w-3/4">
