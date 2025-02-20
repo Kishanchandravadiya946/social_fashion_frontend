@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
+import Product from './user/products/products';
 import CreateCategory from './admin/productCategory/productCategoryCreate';
 import CreateProduct from './admin/product/productCreate';
 import ProductItemCreate from './admin/productItem/productItemCreate';
@@ -17,7 +18,7 @@ const AppRoutes = () => {
             <Route path="/login" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/logout" element={<Logout/>}/>
-
+            <Route path="/product" element={<Product/>}/>
             {/* 
             <Route path="/admin/create-category" element={<CreateCategory/>}/>
             <Route path="/admin/create-product" element={<CreateProduct/>}/>
