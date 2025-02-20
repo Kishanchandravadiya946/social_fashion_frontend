@@ -2,11 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const FeaturedProducts = () => {
-    const products = [
-      { id: 1, name: "Classic Blazer", price: "$89", image: "https://via.placeholder.com/200" },
-      { id: 2, name: "Trendy Coat", price: "$120", image: "https://via.placeholder.com/200" },
-      { id: 3, name: "Casual Shirt", price: "$45", image: "https://via.placeholder.com/200" },
-    ];
     const [productItems, setProductItems] = useState([]);
   const navigate = useNavigate();
 
@@ -15,7 +10,7 @@ const FeaturedProducts = () => {
       .then((response) => response.json())
       .then((data) => setProductItems(data))
       .catch((error) => console.error("Error fetching product items:", error));
-  }, []);
+  },[]);
   
     return (
       <section className="px-10 py-8">

@@ -29,18 +29,18 @@ const SignIn = () => {
                     password: password,
                 }),
             });
-    
+            // console.log("object");
             const data = await response.json();
-    
             if (response.ok) {
+                localStorage.setItem("token", data.access_token);
+                localStorage.setItem("user_id", data.user_id);
+                // console.log(data)
                 setTimeout(() => navigate("/"), 1000);
             }
             else {
                 setError(data.error || "Something went wrong.");
             }  
     
-            // Store auth token (if any)
-            // localStorage.setItem("token", data.token);
             
         } catch (err) {
             setError(err.message);

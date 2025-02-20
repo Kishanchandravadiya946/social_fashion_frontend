@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 
-export default function CreateProduct() {
+export default function CreateProductModal({ onClose }) {
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [name, setName] = useState("");
@@ -10,7 +8,6 @@ export default function CreateProduct() {
   const [productImage, setProductImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -26,7 +23,6 @@ export default function CreateProduct() {
       }
     };
     fetchCategories();
-    // print(categories)
   }, []);
 
   const handleCreateProduct = async (e) => {
@@ -41,8 +37,10 @@ export default function CreateProduct() {
     if (productImage) formData.append("product_image", productImage);
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://127.0.0.1:5050/product/create", {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -50,7 +48,7 @@ export default function CreateProduct() {
         throw new Error("Failed to create product");
       }
 
-    //   navigate("/products"); // Redirect after success
+      onClose(); // Close the modal after success
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,56 +57,53 @@ export default function CreateProduct() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-    <div className="bg-white shadow-md rounded-xl p-8 w-full max-w-md border border-gray-200">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800">Create Product</h2>
-       
-        {/* <button
-            onClick={() => navigate("/products")}
-            className="text-gray-600 hover:text-gray-900 flex items-center gap-1"
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-900">
+          ✖
+        </button>
+
+        <h2 className="text-2xl font-bold text-center mb-4">CREATE PRODUCT</h2>
+
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
+        <form onSubmit={handleCreateProduct} className="space-y-4">
+          <select
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            required
           >
-            <ArrowLeft className="w-5 h-5" />
-            Back
-          </button> */}
-        </div>
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.category_name}
+              </option>
+            ))}
+          </select>
 
-        {/* Error Message */}
-        {error && <p className="text-red-500 text-sm text-center mb-3">{error}</p>}
+          <input
+            type="text"
+            placeholder="Product Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
+            required
+          />
 
-        {/* Form */}
-        <form onSubmit={handleCreateProduct} className="space-y-5">
-          {/* Category Selection */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Category</label>
-            <select
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500"
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.category_name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <textarea
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
+          />
 
-          {/* Product Name */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Product Name</label>
-            <input
-              type="text"
-              placeholder="Enter product name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500"
-              required
-            />
-          </div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProductImage(e.target.files[0])}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
+          />
 
           {/* Product Description */}
           <div>
@@ -136,7 +131,7 @@ export default function CreateProduct() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-gray-800 text-white font-semibold py-3 rounded-lg hover:bg-gray-900 disabled:bg-gray-400 transition"
+            className="w-full bg-green-500 text-white font-semibold py-2 rounded-lg hover:bg-green-600 disabled:bg-gray-400"
             disabled={loading}
           >
             {loading ? "Creating..." : "Create Product"}
