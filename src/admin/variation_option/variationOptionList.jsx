@@ -33,7 +33,7 @@ export default function VariationOptionList() {
   return (
     <div className="max-w-5xl mx-auto bg-white shadow-lg p-6 rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">Variation Options</h2>
+        <h2 className="text-black text-2xl font-semibold">Variation Options</h2>
         <button
           onClick={() => setVariationOptionModalOpen(true)}
           className="bg-blue-400 text-black py-3 px-6 rounded-full"
@@ -61,7 +61,7 @@ export default function VariationOptionList() {
               key={option.id}
               className="w-full bg-gray-100 p-4 rounded-lg shadow-sm flex items-center"
             >
-              <span className="text-lg font-medium">{option.value}</span>
+              <span className="text-lg text-black font-medium">{option.value}</span>
             </div>
           ))}
         </div>

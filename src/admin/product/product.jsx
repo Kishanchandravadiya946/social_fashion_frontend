@@ -1,48 +1,98 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateProductModal from "./productCreate";
+import ProductUpdateModal from "./productUpdate";
+import ProductDeleteModal from "./productDelete"
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+ 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:5050/product/list");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await response.json();
-        setProducts(data);
-      } catch (err) {
-        console.error(err.message);
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5050/product/list");
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
       }
-    };
+      const data = await response.json();
+      console.log(data)
+      setProducts(data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts();
   }, []);
 
+  const handleEditClick = (product) => {
+    setSelectedProduct(product);
+    
+    setIsEditModalOpen(true);
+  };
+  
+  const handleDeleteClick = (product) => {
+    setSelectedProduct(product);
+    console.log(product)
+    setIsDeleteModalOpen(true);
+  };
+
   return (
-    <div className="flex flex-col  min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 p-8">
+    <div className="flex flex-col  min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 p-8 relative">
        <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsCreateModalOpen(true)}
         className="mb-6 bg-green-400 text-black font-semibold py-3 px-6 rounded-full hover:bg-green-500"
       >
         + Create New Product
       </button>
-      {isModalOpen && <CreateProductModal onClose={() => setIsModalOpen(false)} />}
+      {isCreateModalOpen && <CreateProductModal onClose={() => setIsCreateModalOpen(false)} />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <div key={product.id} className="bg-white p-4 rounded-lg shadow-lg">
+          <div key={product.id} className="bg-white p-4 rounded-lg shadow-lg relative">
             <img src={product.product_image || "https://via.placeholder.com/150"} alt={product.name} className="w-full h-48 object-cover rounded-md" />
-            <h3 className="text-xl font-bold mt-2">{product.name}</h3>
+            <h3 className="text-xl text-black font-bold mt-2">{product.name}</h3>
             <p className="text-gray-600">{product.description}</p>
+            <button
+              onClick={() => {
+                handleEditClick(product)
+              }}
+              className="absolute bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+            >
+              Edit
+            </button>
+            <button
+                onClick={() => handleDeleteClick(product)}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Delete
+              </button>
           </div>
         ))}
       </div>
+      
+      {isEditModalOpen && (
+        <ProductUpdateModal
+          product={selectedProduct}
+          onClose={() => setIsEditModalOpen(false)}
+          onUpdate={fetchProducts}
+        />
+      )}
+
+      {isDeleteModalOpen && (
+        <ProductDeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          product={selectedProduct}
+          onDelete={fetchProducts}
+        />
+      )}
     </div>
   );
 }

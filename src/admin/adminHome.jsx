@@ -53,8 +53,8 @@ export default function AdminDashboard() {
 
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
-          <h1 className="text-xl font-semibold">Admin Dashboard</h1>
-          <div className="text-gray-700 font-medium">Welcome, Admin</div>
+          <h1 className="text-black text-xl font-semibold">Admin Dashboard</h1>
+          <div className="text-black font-medium">Welcome, Admin</div>
         </header>
 
         <main className="flex-1 p-6 bg-gray-100 flex items-center justify-center">

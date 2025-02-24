@@ -1,18 +1,34 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductItemModal from "./productItemCreate";
+import ProductItemUpdate from "./productitemUpdate";
+import ProductItemDelete from "./productitemDelete";
+
 
 export default function ProductItemPage() {
   const [productItems, setProductItems] = useState([]);
   const [isProductItemOpen,setProductItemOpen]=useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedProductItem, setSelectedProductItem] = useState(null);
   const navigate = useNavigate();
 
+  const fetchProductItems = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5050/product_item/list");
+      const data = await response.json();
+      // console.log(data)
+      setProductItems(data);
+    } catch (error) {
+      console.error("Error fetching product items:", error);
+    }
+  };
+
   useEffect(() => {
-    fetch("http://127.0.0.1:5050/product_item/list")
-      .then((response) => response.json())
-      .then( (data) => setProductItems(data))
-      .catch((error) => console.error("Error fetching product items:", error));
+    fetchProductItems();
   }, []);
+
+ 
 // console.log(productItems);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-900 to-blue-700">
@@ -30,20 +46,52 @@ export default function ProductItemPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
       {productItems.map((item) => (
-        <div key={item.id} className="bg-white p-4 rounded-lg shadow-lg">
+        <div key={item.id} className="bg-white p-4 rounded-lg shadow-lg relative">
           <img
             src={item.product_image || "https://via.placeholder.com/150"}
             alt={item.SKU}
             className="w-full h-48 object-cover rounded-md"
           />
-          <h3 className="text-xl font-bold mt-2">SKU: {item.SKU}</h3>
+          <h3 className="text-xl text-black font-bold mt-2">SKU: {item.SKU}</h3>
           <p className="text-gray-600">Stock: {item.qty_in_stock}</p>
           <p className="text-gray-800 font-semibold">Price: ${item.price.toFixed(2)}</p>
+           {/* Edit Button */}
+           <button
+              className="absolute bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+              onClick={() => {
+                setSelectedProductItem(item);
+                setIsUpdateModalOpen(true);
+              }}
+            >
+              Edit
+            </button>
+            <button
+              className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"
+              onClick={() => {
+                setSelectedProductItem(item);
+                setIsDeleteModalOpen(true);
+              }}
+            >
+              Delete
+            </button>
         </div>
       ))}
     </div>
-      </div>
+    </div>
+    <ProductItemUpdate
+      isOpen={isUpdateModalOpen}
+      onClose={() => setIsUpdateModalOpen(false)}
+      productItem={selectedProductItem}
+      refreshProductItems={fetchProductItems}
+    />
+     <ProductItemDelete
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        productItem={selectedProductItem}
+        refreshProductItems={fetchProductItems}
+      />
     </div>
   );
 }

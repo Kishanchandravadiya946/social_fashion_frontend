@@ -62,7 +62,7 @@ export default function VariationOptionCreate({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-semibold mb-4">Create Variation Option</h2>
+        <h2 className="text-black text-2xl font-semibold mb-4">Create Variation Option</h2>
 
         {error && <p className="text-red-500">{error}</p>}
         {success && <p className="text-green-500">{success}</p>}
