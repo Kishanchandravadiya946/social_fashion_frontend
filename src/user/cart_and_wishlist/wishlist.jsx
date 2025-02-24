@@ -32,7 +32,6 @@ const Wishlist = () => {
     fetchWishlist();
   }, []);
 
-  // Remove Wishlist Item
   const handleRemove = async (itemId) => {
     try {
       const response = await fetch(`http://127.0.0.1:5050/wishlist/delete/${itemId}`, {
