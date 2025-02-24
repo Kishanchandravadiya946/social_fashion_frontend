@@ -2,9 +2,12 @@ import Navbar from "../component/navbar";
 import ProductList from "./productList";
 import ParentCategories from "./parentsCategories";
 import ChildCategories from "./childCategories";
+import { useLocation } from "react-router-dom";
 
 import { useEffect,useState } from "react";
 const Product = () => {
+    const location = useLocation();
+    const { id } = location.state || {};
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedCategories, setSelectedCategories] = useState([]); 
@@ -32,7 +35,7 @@ const Product = () => {
     }, []);
   return (
     <div>
-    <Navbar />
+    <Navbar user_id={id}/>
     <div className="flex">
       <div className="w-1/4 p-4 border-r border-gray-300">
         <h2 className="text-lg font-semibold mb-4">Filters</h2>

@@ -21,7 +21,7 @@ const ChildCategories = ({ categories, selectedCategory, selectedCategories, set
               childCategories.map((subCategory) => (
                 <li
                 key={subCategory.id}
-                className={`p-2 cursor-pointer hover:bg-black-200 rounded-md border-2 flex items-center justify-between mb-2 ${
+                className={`p-2 cursor-pointer hover:bg-black-200 rounded-md flex items-center justify-between mb-2 ${
                   selectedCategories.includes(subCategory.id) ? "border-blue-500 font-semibold" : "border-transparent"
                 }`}
                 onClick={() => toggleCategory(subCategory.id)}

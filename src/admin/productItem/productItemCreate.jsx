@@ -17,7 +17,9 @@ export default function ProductItemModal({ isOpen, onClose }) {
       try {
         const response = await fetch("http://127.0.0.1:5050/product/list");
         const data = await response.json();
-        setProducts(data.products);
+        console.log(data)
+        setProducts(data);
+
       } catch (err) {
         console.error("Failed to load products", err);
       }

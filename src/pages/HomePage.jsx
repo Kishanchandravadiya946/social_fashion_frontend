@@ -10,7 +10,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const user_id = localStorage.getItem("user_id");
-    console.log(user_id);
+    // console.log(user_id);
       setUserId(user_id);
       setLoading(false); 
   }, [navigate]);

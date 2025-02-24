@@ -37,7 +37,7 @@ export default function ProductItemPage() {
             alt={item.SKU}
             className="w-full h-48 object-cover rounded-md"
           />
-          <h3 className="text-xl font-bold mt-2">SKU: {item.SKU}</h3>
+          <h3 className="text-xl text-black font-bold mt-2">SKU: {item.SKU}</h3>
           <p className="text-gray-600">Stock: {item.qty_in_stock}</p>
           <p className="text-gray-800 font-semibold">Price: ${item.price.toFixed(2)}</p>
         </div>
