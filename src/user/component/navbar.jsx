@@ -1,12 +1,12 @@
 import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa"; 
+import ProfileDropdown from "./profile/profiledropdown";
+
 
 const Navbar = ({ user_id }) => {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    navigate("/logout");
-  };
+ 
 
   return (
     <nav className="flex justify-between items-center p-4 bg-white shadow-md">
@@ -55,12 +55,9 @@ const Navbar = ({ user_id }) => {
           </button>
         )}
         {user_id ? (
-          <button
-            onClick={handleLogout}
-            className="border px-4 py-1 rounded-full hover:bg-black hover:text-white"
-          >
-            Logout
-          </button>
+          <>   
+           <ProfileDropdown user={user_id}/> 
+          </>
         ) : (
           <button
             onClick={() => navigate("/login")}
@@ -68,6 +65,7 @@ const Navbar = ({ user_id }) => {
           >
             Login
           </button>
+          
         )}
       </div>
     </nav>
