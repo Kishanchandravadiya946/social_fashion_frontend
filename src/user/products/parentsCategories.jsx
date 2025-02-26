@@ -10,12 +10,12 @@ const ParentCategories = ({ categories, selectedCategory, setSelectedCategory,se
           <li
             key={category.id}
             className={`p-2 cursor-pointer hover:bg-black-200 rounded-md flex items-center justify-between mb-2 ${
-              selectedCategory === category.id ? "border-blue-500 font-semibold" : "border-transparent"
+              selectedCategory?.id === category.id ? "border-blue-500 font-semibold" : "border-transparent"
             }`}
-            onClick={() => (setSelectedCategory(category.id),setSelectedCategories([]))}
+            onClick={() => (setSelectedCategory(category),setSelectedCategories([]))}
           >
             {category.category_name}
-            {selectedCategory === category.id && (
+            {selectedCategory?.id === category.id && (
               <FaCheckCircle className="text-green-500" /> // Green tick for selected category
             )}
           </li>

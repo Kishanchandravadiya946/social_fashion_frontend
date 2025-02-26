@@ -2,49 +2,66 @@ import { useEffect, useState } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const ProductList = ({ selectedCategory, selectedCategories }) => {
+const ProductList = ({ user_id, selectedCategory, selectedCategories }) => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams();
+  if (selectedCategories.length > 0) {
+    queryParams.append(
+      "f",
+      selectedCategories.map((SC) => SC.category_name).join(",")
+    );
 
-      const fetchProducts = async () => {
-        try {
-          const token = localStorage.getItem("token");
+    // console.log(queryParams.toString());
+  }
+  const fetchProducts = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-          const headers = token
-            ? {
-                Authorization: `Bearer ${token}`,
-              }
-            : {
-              };
-          const response = await fetch(
-            `http://127.0.0.1:5050/product_item/category/${selectedCategory}`,
-            {
-              method: "GET",
-              headers: headers,
-            }
-          );
-          if (!response.ok) throw new Error("Failed to fetch products");
-          const data = await response.json();
-          // console.log(data);
-          setProducts(data.product_items);
-        } catch (error) {
-          setProducts([]);
-          console.error("Error fetching products:", error);
+      const headers = token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : {};
+      const response = await fetch(
+        `http://127.0.0.1:5050/product_item/category/${
+          selectedCategory.id
+        }?${queryParams.toString()}`,
+        {
+          method: "GET",
+          headers: headers,
         }
-      };
+      );
+      console.log(selectedCategories);
+      if (!response.ok) throw new Error("Failed to fetch products");
+      const data = await response.json();
+      // console.log(data);
+      setProducts(data.product_items);
+    } catch (error) {
+      setProducts([]);
+      console.error("Error fetching products:", error);
+    }
+  };
   useEffect(() => {
-    if (!selectedCategory) return; 
+    if (!selectedCategory) return;
+    // console.log(selectedCategories);
     fetchProducts();
   }, [selectedCategory]);
 
+  useEffect(() => {
+    fetchProducts();
+    // console.log(selectedCategory);
+    // console.log(selectedCategories);
+  }, [selectedCategories]);
+
   const addToWishlist = async (productItemId) => {
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
     if (!token) {
       console.error("User is not authenticated");
       navigate("/login");
       return;
     }
-  
+
     try {
       const response = await fetch("http://127.0.0.1:5050/wishlist/new", {
         method: "POST",
@@ -54,12 +71,15 @@ const ProductList = ({ selectedCategory, selectedCategories }) => {
         },
         body: JSON.stringify({ product_item_id: productItemId }),
       });
-  
+
       const data = await response.json();
       if (response.ok) {
-        console.log("Item added to wishlist:", data);
-        setProducts([]);
-        fetchProducts();
+        // console.log("Item added to wishlist:", data);
+        setProducts((prevItems) =>
+          prevItems.map((item) =>
+            item.id === productItemId ? { ...item, wishlist: true } : item
+          )
+        );
       } else {
         console.error("Error:", data.message);
       }
@@ -73,7 +93,15 @@ const ProductList = ({ selectedCategory, selectedCategories }) => {
       <h2 className="text-lg font-semibold mb-4">Products</h2>
       <div className="grid grid-cols-4 gap-4">
         {products.map((product) => (
-          <div key={product.SKU} className="border p-4 rounded shadow-md">
+          <div
+            key={product.SKU}
+            className="border p-4 rounded shadow-md transition-transform duration-300 hover:shadow-lg hover:scale-100 cursor-pointer"
+            onClick={() =>
+              navigate(`/product/${product.product.name}/${product.id}`, {
+                state: { userId: user_id, product: product },
+              })
+            }
+          >
             <img
               src={product.product_image}
               alt={product.SKU}
@@ -94,9 +122,10 @@ const ProductList = ({ selectedCategory, selectedCategories }) => {
               {product.wishlist !== undefined && (
                 <button
                   className="text-gray-600 text-2xl p-2 rounded-full transition-colors duration-200 hover:text-red-500"
-                  onClick={() =>
-                    product.wishlist ? null : addToWishlist(product.id)
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    product.wishlist ? null : addToWishlist(product.id);
+                  }}
                 >
                   {product.wishlist ? (
                     <FaHeart className="text-red-500" />

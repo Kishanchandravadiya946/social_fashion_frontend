@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaHeart ,FaTimes} from "react-icons/fa";
+import { FaHeart, FaHeartBroken, FaTimes } from "react-icons/fa";
 import Navbar from "../component/navbar";
 
 const Wishlist = () => {
@@ -71,7 +71,10 @@ const Wishlist = () => {
               <img
                 src={item.product_image}
                 alt={item.product_name}
-                className="w-full h-40 object-cover rounded-md"
+                className="w-full h-40 object-cover rounded-md cursor-pointer"
+                onClick={() =>
+                  navigate(`/product/${item.product_name}/${item.id}`)
+                }
               />
 
               <div className="mt-3">
@@ -84,8 +87,18 @@ const Wishlist = () => {
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-500 col-span-full">
-            No items in wishlist
+          <p className="flex flex-col items-center justify-center col-span-full text-gray-500 py-10">
+            <FaHeartBroken className="text-gray-400 text-5xl mb-3" />
+            <span className="text-xl font-semibold">No items in wishlist</span>
+            <p className="text-gray-400 mt-2">
+              Browse and add your favorite products to your wishlist.
+            </p>
+            <button
+              onClick={() => navigate("/product")} // Navigates to shop page
+              className="mt-4 px-6 py-3 bg-pink-500 text-white font-semibold rounded-lg shadow-md hover:bg-pink-600 transition"
+            >
+              Explore Products
+            </button>
           </p>
         )}
       </div>
