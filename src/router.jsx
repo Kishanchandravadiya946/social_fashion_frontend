@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
 import Product from './user/products/products';
 import Wishlist from './user/cart_and_wishlist/wishlist';
+import Profile from './user/component/profile/profile';
 import CreateCategory from './admin/productCategory/productCategoryCreate';
 import CreateProduct from './admin/product/productCreate';
 import ProductItemCreate from './admin/productItem/productItemCreate';
@@ -21,6 +22,7 @@ const AppRoutes = () => {
             <Route path="/logout" element={<Logout/>}/>
             <Route path="/product" element={<Product/>}/>
             <Route path="/wishlist" element={<Wishlist/>}/>
+            <Route path="/profile" element={<Profile/>}/>
             {/* 
             <Route path="/admin/create-category" element={<CreateCategory/>}/>
             <Route path="/admin/create-product" element={<CreateProduct/>}/>
