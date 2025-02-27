@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user_id");
         if(token){
-        const response = await fetch("http://127.0.0.1:5050/user/logout", {
+        const response = await fetch(`${API_BASE_URL}/user/logout`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

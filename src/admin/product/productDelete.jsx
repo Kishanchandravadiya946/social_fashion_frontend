@@ -1,11 +1,11 @@
 import React from "react";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 export default function ProductDeleteModal({ isOpen, onClose, product, onDelete }) {
   if (!isOpen || !product) return null;
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5050/product/delete/${product.id}`, {
+      const response = await fetch(`${API_BASE_URL}/product/delete/${product.id}`, {
         method: "DELETE",
       });
 

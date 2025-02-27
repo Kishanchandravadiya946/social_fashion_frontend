@@ -4,6 +4,7 @@ import ParentCategories from "./parentsCategories";
 import ChildCategories from "./childCategories";
 import { useLocation } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 import { useEffect, useState } from "react";
 const Product = () => {
@@ -18,7 +19,7 @@ const Product = () => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:5050/product_category/list",
+          `${API_BASE_URL}/product_category/list`,
           {
             method: "GET",
           }

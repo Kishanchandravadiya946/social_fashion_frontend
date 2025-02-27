@@ -6,6 +6,7 @@ import  Button  from "./button";
 import { FaEdit ,FaMapMarkerAlt, FaTrash,FaEllipsisV,FaCheck} from "react-icons/fa";
 import EditProfileModal from "./profileEdit"; // Import the modal
 import AddressCreate from "./addressCreate";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 
 export default function Profile() {
@@ -20,13 +21,13 @@ export default function Profile() {
     const fetchProfileAndAddresses = async () => {
       try {
         const [profileRes, addressRes] = await Promise.all([
-          fetch("http://127.0.0.1:5050/user/profile", {
+          fetch(`${API_BASE_URL}/user/profile`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }),
-          fetch("http://127.0.0.1:5050/user/addresslist", {
+          fetch(`${API_BASE_URL}/user/addresslist`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           }),
         ]);
@@ -36,7 +37,7 @@ export default function Profile() {
 
         const profileData = await profileRes.json();
         const addressData = await addressRes.json();
-         console.log(addressData)
+        //  console.log(addressData)
         setUser({ ...profileData, addresses: addressData.address_list });
         setDefaultAddressId(addressData.is_default)
         
@@ -64,7 +65,7 @@ export default function Profile() {
   const handleDeleteAddress = async (addressId) => {
     try {
       console.log(addressId)
-      const response = await fetch(`http://127.0.0.1:5050/user/delete-address/${addressId}`, {
+      const response = await fetch(`${API_BASE_URL}/user/delete-address/${addressId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -85,7 +86,7 @@ export default function Profile() {
   const handleSetDefaultAddress = async (addressId) => {
     try {
       console.log(addressId)
-      const response = await fetch(`http://127.0.0.1:5050/user/set-default-address/${addressId}`, {
+      const response = await fetch(`${API_BASE_URL}/user/set-default-address/${addressId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

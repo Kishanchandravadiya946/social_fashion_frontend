@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function EditProfileModal({ user, onClose, onUpdate }) {
   const [formData, setFormData] = useState({
@@ -16,7 +17,7 @@ export default function EditProfileModal({ user, onClose, onUpdate }) {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:5050/user/update", {
+      const response = await fetch(`${API_BASE_URL}/user/update`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

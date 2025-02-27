@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Avatar from "./avatar";
 import { Card, CardContent } from "./card";
 import Button from "./button";
-import { User, Settings, LogOut } from "lucide-react";
 import { FaUser, FaHeart, FaSignOutAlt, FaCog } from "react-icons/fa"; // Import icons
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function ProfileDropdown({ user_id }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function ProfileDropdown({ user_id }) {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5050/user/profile", {
+      const response = await fetch(`${API_BASE_URL}/user/profile`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

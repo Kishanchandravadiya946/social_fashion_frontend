@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CreateProductModal from "./productCreate";
 import ProductUpdateModal from "./productUpdate";
 import ProductDeleteModal from "./productDelete"
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
@@ -15,7 +16,7 @@ export default function ProductList() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5050/product/list");
+      const response = await fetch(`${API_BASE_URL}/product/list`);
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }

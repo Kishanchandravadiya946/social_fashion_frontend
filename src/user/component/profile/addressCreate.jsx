@@ -2,6 +2,7 @@ import { useState,useEffect } from "react";
 import  Input  from "./AddressUI/Input"; // Assuming these components exist
 import  Button from "./AddressUI/button";
 import  Modal  from "./AddressUI/Modal";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function AddressCreate({ onClose, onAddressAdded }) {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ export default function AddressCreate({ onClose, onAddressAdded }) {
   useEffect(() => {
     async function fetchCountries() {
       try {
-        const response = await fetch("http://127.0.0.1:5050/user/get_countries", {
+        const response = await fetch(`${API_BASE_URL}/user/get_countries`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
@@ -46,7 +47,7 @@ export default function AddressCreate({ onClose, onAddressAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://127.0.0.1:5050/user/new_address", {
+      const response = await fetch(`${API_BASE_URL}/user/new_address`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

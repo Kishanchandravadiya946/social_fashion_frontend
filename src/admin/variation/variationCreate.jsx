@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function CreateVariationPopup({ isOpen, onClose }) {
   const [categories, setCategories] = useState([]);
@@ -11,7 +12,7 @@ export default function CreateVariationPopup({ isOpen, onClose }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5050/product_category/list");
+        const response = await fetch(`${API_BASE_URL}/product_category/list`);
         if (!response.ok) throw new Error("Failed to fetch categories");
         const data = await response.json();
         setCategories(data);
@@ -30,7 +31,7 @@ export default function CreateVariationPopup({ isOpen, onClose }) {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://127.0.0.1:5050/variation/create", {
+      const response = await fetch(`${API_BASE_URL}/variation/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

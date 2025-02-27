@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function ProductUpdateModal({ product, onClose, onUpdate }) {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,7 @@ export default function ProductUpdateModal({ product, onClose, onUpdate }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5050/product_category/list");
+        const response = await fetch(`${API_BASE_URL}/product_category/list`);
         if (!response.ok) {
           throw new Error("Failed to fetch categories");
         }
@@ -49,7 +50,7 @@ export default function ProductUpdateModal({ product, onClose, onUpdate }) {
     try {
       // console.log(formData)
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://127.0.0.1:5050/product/update/${product.id}`, {
+      const response = await fetch(`${API_BASE_URL}/product/update/${product.id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

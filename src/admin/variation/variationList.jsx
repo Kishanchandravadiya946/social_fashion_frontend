@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CreateVariationPopup from "./variationCreate";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function VariationList() {
   const [variations, setVariations] = useState([]);
@@ -10,7 +11,7 @@ export default function VariationList() {
   useEffect(() => {
     const fetchVariations = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5050/variation/list", {
+        const response = await fetch(`${API_BASE_URL}/variation/list`, {
           method: "GET",
         });
 

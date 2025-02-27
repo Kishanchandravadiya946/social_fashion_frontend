@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 
 const SignUp = () => {
@@ -43,7 +44,7 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:5050/user/create", {
+      const response = await fetch(`${API_BASE_URL}/user/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
