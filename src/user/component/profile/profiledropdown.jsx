@@ -4,7 +4,7 @@ import Avatar from "./avatar";
 import { Card, CardContent } from "./card";
 import Button from "./button";
 import { User, Settings, LogOut } from "lucide-react";
-import { FaUser, FaHeart, FaSignOutAlt,FaCog } from "react-icons/fa"; // Import icons
+import { FaUser, FaHeart, FaSignOutAlt, FaCog } from "react-icons/fa"; // Import icons
 
 export default function ProfileDropdown({ user_id }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,8 +24,8 @@ export default function ProfileDropdown({ user_id }) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}` // If JWT is needed
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // If JWT is needed
+        },
       });
 
       if (!response.ok) {
@@ -43,25 +43,33 @@ export default function ProfileDropdown({ user_id }) {
   return (
     <div className="relative">
       <button onClick={() => setIsOpen(!isOpen)} className="flex items-center">
-        <Avatar name={user?.username} src={user?.profilePicture} className="w-10 h-10" />
+        <Avatar
+          name={user?.username}
+          src={user?.profilePicture}
+          className="w-10 h-10"
+        />
       </button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
           <Card>
             <CardContent className="p-2">
               <div className="flex items-center p-2">
-                
-                <Avatar name={user?.username} src={user?.profilePicture} className="w-8 h-8" />
+                <Avatar
+                  name={user?.username}
+                  src={user?.profilePicture}
+                  className="w-8 h-8"
+                />
                 <div className="ml-2">
-                  <p className="text-black font-medium">{user?.username || "Guest"}</p>
+                  <p
+                    onClick={() =>
+                      navigate("/profile", { state: { id: user_id } })
+                    }
+                    className="text-black font-medium cursor-pointer"
+                  >
+                    {user?.username || "Guest"}
+                  </p>
                 </div>
               </div>
-              <button
-                onClick={() => navigate("/profile", { state: { id: user_id } })}
-                className="text-black flex items-center p-2 hover:bg-gray-100 rounded w-full"
-              >
-                <FaUser className="text-black w-5 h-5 mr-2" /> Edit Profile
-              </button>
               <button
                 // onClick={() => navigate("/settings", { state: { id: user_id } })}
                 className="text-black flex items-center p-2 hover:bg-gray-100 rounded w-full"
@@ -69,18 +77,21 @@ export default function ProfileDropdown({ user_id }) {
                 <FaCog className="text-black w-5 h-5 mr-2" /> Settings
               </button>
               <button
-                onClick={() => navigate("/wishlist", { state: { id: user_id } })}
+                onClick={() =>
+                  navigate("/wishlist", { state: { id: user_id } })
+                }
                 className="text-black flex items-center p-2 hover:bg-gray-100 rounded w-full"
               >
                 <FaHeart className="text-black w-5 h-5 mr-2" />
                 wishlist
               </button>
-              <button onClick={handleLogout}
-            className="text-black flex items-center p-2 hover:bg-gray-100 rounded w-full">
-            <FaSignOutAlt className="text-black w-5 h-5 mr-2" />
-                            Logout
-          </button>
-              
+              <button
+                onClick={handleLogout}
+                className="text-black flex items-center p-2 hover:bg-gray-100 rounded w-full"
+              >
+                <FaSignOutAlt className="text-black w-5 h-5 mr-2" />
+                Logout
+              </button>
             </CardContent>
           </Card>
         </div>
