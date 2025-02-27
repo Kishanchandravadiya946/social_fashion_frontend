@@ -7,29 +7,65 @@ export default function VariationOptionList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isVariationOptionModalOpen, setVariationOptionModalOpen] = useState(false);
+  const [variationMap, setVariationMap] = useState({});
+  const [categoryMap, setCategoryMap] = useState({});
 
   useEffect(() => {
-    const fetchVariationOptions = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/variation_option/list`, {
-          method: "GET",
-        });
+        const [optionsRes, variationsRes, categoriesRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/variation_option/list`),
+          fetch(`${API_BASE_URL}/variation/list`),
+          fetch(`${API_BASE_URL}/product_category/list`),
+        ]);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch variation options");
+        if (!optionsRes.ok || !variationsRes.ok || !categoriesRes.ok) {
+          throw new Error("Failed to fetch data");
         }
 
-        const data = await response.json();
-        setVariationOptions(data);
+        const optionsData = await optionsRes.json();
+        const variationsData = await variationsRes.json();
+        const categoriesData = await categoriesRes.json();
+
+        const variationMap = variationsData.reduce((acc, variation) => {
+          acc[variation.id] = { name: variation.name, category_id: variation.category_id };
+          return acc;
+        }, {});
+
+        const categoryMap = categoriesData.reduce((acc, category) => {
+          acc[category.id] = category.category_name;
+          return acc;
+        }, {});
+
+        setVariationMap(variationMap);
+        setCategoryMap(categoryMap);
+
+        // Merge data into variation options
+        const enrichedOptions = optionsData.map(option => ({
+          ...option,
+          variation_name: variationMap[option.variation_id]?.name || "Unknown",
+          category_name: categoryMap[variationMap[option.variation_id]?.category_id] || "N/A",
+        }));
+          
+        setVariationOptions(enrichedOptions);
       } catch (err) {
-        setError("Failed to fetch variation options. Please try again.");
+        setError("Failed to fetch data. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchVariationOptions();
+    fetchData();
   }, []);
+
+
+  const handleAddVariationOption = (newOption) => {
+    const enrichedOption = {
+      ...newOption,
+    };
+    console.log(enrichedOption)
+    setVariationOptions(prevOptions => [...prevOptions, enrichedOption]);
+  };
 
   return (
     <div className="max-w-5xl mx-auto bg-white shadow-lg p-6 rounded-lg">
@@ -47,6 +83,7 @@ export default function VariationOptionList() {
       <VariationOptionCreate
         isOpen={isVariationOptionModalOpen}
         onClose={() => setVariationOptionModalOpen(false)}
+        onAddVariationOption={handleAddVariationOption}
       />
 
       {loading ? (
@@ -58,12 +95,19 @@ export default function VariationOptionList() {
       ) : (
         <div className="space-y-4">
           {variationOptions.map((option) => (
-            <div
-              key={option.id}
-              className="w-full bg-gray-100 p-4 rounded-lg shadow-sm flex items-center"
-            >
-              <span className="text-lg text-black font-medium">{option.value}</span>
-            </div>
+           <div
+           key={option.id}
+           className="w-full flex items-center rounded-lg shadow-sm border"
+         >
+      
+           <div className="w-1/3 bg-blue-200 text-blue-900 font-semibold px-4 py-3 rounded-l-lg flex justify-center items-center">
+            {option.value}
+          </div>
+    
+          <div className="w-2/3 bg-green-200 text-green-900 font-semibold px-4 py-3 rounded-r-lg flex justify-center items-center">
+            {option.variation_name} -- {option.category_name}
+          </div>
+         </div>
           ))}
         </div>
       )}
