@@ -41,7 +41,7 @@ const Product = () => {
   }, []);
   return (
     <div>
-      <Navbar user_id={id} />
+      <Navbar  />
       <div className="flex">
         <div className="w-1/4 p-4 border-r border-gray-300">
           <h2 className="text-lg font-semibold mb-4">Filters</h2>
@@ -64,7 +64,6 @@ const Product = () => {
         </div>
 
         <ProductList
-          user_id={id}
           selectedCategory={selectedCategory}
           selectedCategories={selectedCategories}
         />

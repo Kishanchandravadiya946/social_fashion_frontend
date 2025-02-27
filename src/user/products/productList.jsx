@@ -3,7 +3,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
-const ProductList = ({ user_id, selectedCategory, selectedCategories }) => {
+const ProductList = ({ selectedCategory, selectedCategories }) => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const queryParams = new URLSearchParams();
@@ -99,7 +99,7 @@ const ProductList = ({ user_id, selectedCategory, selectedCategories }) => {
             className="border p-4 rounded shadow-md transition-transform duration-300 hover:shadow-lg hover:scale-100 cursor-pointer"
             onClick={() =>
               navigate(`/product/${product.product.name}/${product.id}`, {
-                state: { userId: user_id, product: product },
+                state: {  product: product },
               })
             }
           >

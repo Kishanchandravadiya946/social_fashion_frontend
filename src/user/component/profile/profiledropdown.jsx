@@ -50,7 +50,7 @@ export default function ProfileDropdown({ user_id }) {
         />
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
+        <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
           <Card>
             <CardContent className="p-2">
               <div className="flex items-center p-2">

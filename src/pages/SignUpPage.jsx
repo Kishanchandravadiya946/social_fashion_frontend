@@ -79,8 +79,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-900 to-indigo-800">
-      <div className="w-full max-w-md p-8 bg-white/10 rounded-lg shadow-lg">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white-900 to-indigo-800">
+      <div className="w-full max-w-md p-8 bg-black bg-opacity-70 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold text-center text-white mb-6">
           SOCIAL FASHION
         </h1>

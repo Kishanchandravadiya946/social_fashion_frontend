@@ -22,6 +22,6 @@ export default function HomePage() {
   if (id == 2) {
     return <AdminDashboard/>; 
   } else {
-    return <HomeDashboard user_id={id}/>;
+    return <HomeDashboard />;
     }
 }

@@ -3,7 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ShoppingCart from "./shopping_cart_item";
 import Navbar from "../component/navbar";
 import { FaShoppingCart } from "react-icons/fa";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+import ProceedToCheckout from "../shop_order/ProceedToCheckout";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -11,7 +13,7 @@ const CartPage = () => {
   const location = useLocation();
   const { id } = location.state || {};
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const getCartItems = async (token) => {
     try {
       const response = await fetch(`${API_BASE_URL}/shopping_cart/all`, {
@@ -20,7 +22,7 @@ const CartPage = () => {
       });
       const data = await response.json();
       // console.log(data);
-     const items = data.cart_product_items;
+      const items = data.cart_product_items;
       if (response.ok) {
         setCartItems(items);
         setTotalPrice(
@@ -28,7 +30,6 @@ const CartPage = () => {
         );
         return data.cart_product_items;
       }
-      
     } catch (error) {
       console.error("Error fetching cart items:", error);
       return [];
@@ -45,14 +46,16 @@ const CartPage = () => {
     fetchCartItems();
     // console.log(cartItems.length);
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     // console.log(cartItems.length);
- setTotalPrice(cartItems.reduce((acc, item) => acc + item.price * item.qty, 0));
-  },[cartItems])
+    setTotalPrice(
+      cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    );
+  }, [cartItems]);
 
   return (
     <div>
-      <Navbar user_id={id} />
+      <Navbar />
       <div>
         {cartItems.length > 0 ? (
           <div className="flex flex-col md:flex-row gap-6 p-6 bg-white-100 ">
@@ -68,7 +71,10 @@ const CartPage = () => {
                 <p>Total Price:</p>
                 <p>₹ {totalPrice.toFixed(2)}</p>
               </div>
-              <button className="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+              <button
+                onClick={() => navigate("/checkout", { state: { cartItems } })}
+                className="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+              >
                 Proceed to Checkout
               </button>
             </div>

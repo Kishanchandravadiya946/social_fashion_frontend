@@ -89,7 +89,7 @@ const ProductDetails = () => {
   if (!product_item) {
     return (
       <div>
-        <Navbar user_id={userId} />
+        <Navbar  />
         <div className="flex items-center justify-center h-screen bg-gray-100">
           <div className="text-center">
             <FaBoxOpen className="text-gray-400 text-6xl mx-auto mb-4" />
@@ -113,7 +113,7 @@ const ProductDetails = () => {
   }
   return (
     <div>
-      <Navbar user_id={userId} />
+      <Navbar  />
       <div className="w-full h-screen p-8 md:p-16 bg-white-50 overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Side: Product Image */}
