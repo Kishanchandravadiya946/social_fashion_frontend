@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ShoppingCart from "./shopping_cart_item";
 import Navbar from "../component/navbar";
 import { FaShoppingCart } from "react-icons/fa";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -12,7 +14,7 @@ const CartPage = () => {
   const navigate=useNavigate();
   const getCartItems = async (token) => {
     try {
-      const response = await fetch("http://127.0.0.1:5050/shopping_cart/all", {
+      const response = await fetch(`${API_BASE_URL}/shopping_cart/all`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });

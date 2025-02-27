@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function VariationOptionCreate({ isOpen, onClose }) {
   const [variations, setVariations] = useState([]);
@@ -13,7 +14,7 @@ export default function VariationOptionCreate({ isOpen, onClose }) {
     
     const fetchVariations = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5050/variation/list");
+        const response = await fetch(`${API_BASE_URL}/variation/list`);
         if (!response.ok) throw new Error("Failed to fetch variations");
         const data = await response.json();
         setVariations(data);
@@ -33,7 +34,7 @@ export default function VariationOptionCreate({ isOpen, onClose }) {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://127.0.0.1:5050/variation_option/create", {
+      const response = await fetch(`${API_BASE_URL}/variation_option/create`, {
         method: "POST",
         headers: { 
           Authorization: `Bearer ${token}`,

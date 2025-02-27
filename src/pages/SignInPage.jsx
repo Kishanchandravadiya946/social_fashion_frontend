@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const SignIn = () => {
     const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const SignIn = () => {
         setLoading(true);
     
         try {
-            const response = await fetch("http://127.0.0.1:5050/user/login", {
+            const response = await fetch(`${API_BASE_URL}/user/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

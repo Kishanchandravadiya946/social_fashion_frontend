@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import CreateCategory from "./productCategoryCreate";
 import UpdateCategory from "./productCategoryUpdate"
 import DeleteCategory from "./productCategoryDelete";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
 export default function ProductCategoryList() {
   const [isEditing, setIsEditing] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -16,7 +18,7 @@ export default function ProductCategoryList() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5050/product_category/list", {
+      const response = await fetch(`${API_BASE_URL}/product_category/list`, {
         method: "GET",
       });
 

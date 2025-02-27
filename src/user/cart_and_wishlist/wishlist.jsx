@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaHeart, FaHeartBroken, FaTimes } from "react-icons/fa";
 import Navbar from "../component/navbar";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const Wishlist = () => {
   const location = useLocation();
@@ -12,7 +13,7 @@ const Wishlist = () => {
   // Fetch Wishlist Data
   const fetchWishlist = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5050/wishlist/all", {
+      const response = await fetch(`${API_BASE_URL}/wishlist/all`, {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -34,7 +35,7 @@ const Wishlist = () => {
 
   const handleRemove = async (itemId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5050/wishlist/delete/${itemId}`, {
+      const response = await fetch(`${API_BASE_URL}/wishlist/delete/${itemId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });

@@ -1,4 +1,5 @@
 import { useState } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function ProductItemDelete({ isOpen, onClose, productItem, refreshProductItems }) {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -6,7 +7,7 @@ export default function ProductItemDelete({ isOpen, onClose, productItem, refres
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      const response = await fetch(`http://127.0.0.1:5050/product_item/delete/${productItem.id}`, {
+      const response = await fetch(`${API_BASE_URL}/product_item/delete/${productItem.id}`, {
         method: "DELETE",
       });
 

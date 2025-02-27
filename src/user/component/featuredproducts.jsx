@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const FeaturedProducts = () => {
     const [product, setProduct] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5050/product/list")
+    fetch(`${API_BASE_URL}/product/list`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
       .catch((error) => console.error("Error fetching product items:", error));

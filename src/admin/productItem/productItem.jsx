@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProductItemModal from "./productItemCreate";
 import ProductItemUpdate from "./productitemUpdate";
 import ProductItemDelete from "./productitemDelete";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 
 export default function ProductItemPage() {
@@ -15,7 +16,7 @@ export default function ProductItemPage() {
 
   const fetchProductItems = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5050/product_item/list");
+      const response = await fetch(`${API_BASE_URL}/product_item/list`);
       const data = await response.json();
       // console.log(data)
       setProductItems(data);

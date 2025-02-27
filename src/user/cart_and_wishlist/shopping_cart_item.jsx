@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import QuantityPopup from "./quantitypopup";
 import { addToCart } from "../shared/shopping_Cart";
 import { FaTimes } from "react-icons/fa";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const ShoppingCart = ({ cartItems, setCartItems }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedQty, setSelectedQty] = useState(1);
-console.log(cartItems);
+// console.log(cartItems);
   const navigate = useNavigate();
 
   const openPopup = (item) => {
@@ -29,7 +30,7 @@ console.log(cartItems);
  const deleteItem = async (cartItemId) => {
      try {
        const response = await fetch(
-         `http://127.0.0.1:5050//shopping_cart/remove/${cartItemId}`,
+         `${API_BASE_URL}/shopping_cart/remove/${cartItemId}`,
          {
            method: "DELETE",
            headers: {

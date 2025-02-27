@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../component/navbar";
 import { FaRegHeart, FaHeart, FaShoppingBag, FaBoxOpen } from "react-icons/fa";
 import { addToCart } from "../shared/shopping_Cart";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -28,7 +29,7 @@ const ProductDetails = () => {
             Authorization: `Bearer ${token}`,
           }
         : {};
-      const response = await fetch(`http://127.0.0.1:5050/product_item/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/product_item/${id}`, {
         method: "GET",
         headers: headers,
       });
@@ -56,7 +57,7 @@ const ProductDetails = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:5050/wishlist/new", {
+      const response = await fetch(`${API_BASE_URL}/wishlist/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

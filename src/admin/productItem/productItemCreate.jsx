@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function ProductItemModal({ isOpen, onClose }) {
   const [products, setProducts] = useState([]);
@@ -15,7 +16,7 @@ export default function ProductItemModal({ isOpen, onClose }) {
     
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5050/product/list");
+        const response = await fetch(`${API_BASE_URL}/product/list`);
         const data = await response.json();
         console.log(data)
         setProducts(data);
@@ -41,7 +42,7 @@ export default function ProductItemModal({ isOpen, onClose }) {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://127.0.0.1:5050/product_item/create", {
+      const response = await fetch(`${API_BASE_URL}/product_item/create`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

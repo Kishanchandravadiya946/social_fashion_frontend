@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const ProductList = ({ user_id, selectedCategory, selectedCategories }) => {
   const [products, setProducts] = useState([]);
@@ -24,7 +25,7 @@ const ProductList = ({ user_id, selectedCategory, selectedCategories }) => {
           }
         : {};
       const response = await fetch(
-        `http://127.0.0.1:5050/product_item/category/${
+        `${API_BASE_URL}/product_item/category/${
           selectedCategory.id
         }?${queryParams.toString()}`,
         {
@@ -63,7 +64,7 @@ const ProductList = ({ user_id, selectedCategory, selectedCategories }) => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:5050/wishlist/new", {
+      const response = await fetch(`${API_BASE_URL}/wishlist/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
