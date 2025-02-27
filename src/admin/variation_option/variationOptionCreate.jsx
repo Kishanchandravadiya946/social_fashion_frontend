@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
-export default function VariationOptionCreate({ isOpen, onClose }) {
+export default function VariationOptionCreate({ isOpen, onClose,onAddVariationOption }) {
   const [variations, setVariations] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [variationId, setVariationId] = useState("");
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,20 +12,43 @@ export default function VariationOptionCreate({ isOpen, onClose }) {
 
   useEffect(() => {
     if (!isOpen) return;
-    
-    const fetchVariations = async () => {
+
+    const fetchData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/variation/list`);
-        if (!response.ok) throw new Error("Failed to fetch variations");
-        const data = await response.json();
-        setVariations(data);
+        const [variationsRes, categoriesRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/variation/list`),
+          fetch(`${API_BASE_URL}/product_category/list`)
+        ]);
+
+        if (!variationsRes.ok || !categoriesRes.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const variationsData = await variationsRes.json();
+        const categoriesData = await categoriesRes.json();
+
+        // Map categories by ID for quick lookup
+        const categoryMap = categoriesData.reduce((acc, category) => {
+          acc[category.id] = category.category_name;
+          return acc;
+        }, {});
+
+        // Merge category names into variations
+        const mergedVariations = variationsData.map(variation => ({
+          ...variation,
+          category_name: categoryMap[variation.category_id] || "Unknown"
+        }));
+
+        setVariations(mergedVariations);
+        setCategories(categoriesData);
       } catch (err) {
-        setError("Error loading variations");
+        setError("Error loading data");
       }
     };
 
-    fetchVariations();
+    fetchData();
   }, [isOpen]);
+
 
   const handleCreateVariationOption = async (e) => {
     e.preventDefault();
@@ -47,10 +71,21 @@ export default function VariationOptionCreate({ isOpen, onClose }) {
         throw new Error("Failed to create variation option");
       }
 
+      const variation = variations.find(v => v.id === parseInt(variationId, 10));
+      console.log(variation)
+
       setSuccess("Variation option created successfully!");
+      onAddVariationOption({
+        value:value,
+        variation_name: variation.name || "Unknown",
+        category_name: variation.category_name || "N/A",
+      });
+      setVariationId("");
+      setValue("");
+      setSuccess("");
       setTimeout(() => {
         onClose();
-      }, 1500);
+      }, 100);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -78,7 +113,7 @@ export default function VariationOptionCreate({ isOpen, onClose }) {
             <option value="">Select Variation</option>
             {variations.map((variation) => (
               <option key={variation.id} value={variation.id}>
-                {variation.name}
+                {variation.name}- <span className="text-gray-500">{variation.category_name}</span>
               </option>
             ))}
           </select>

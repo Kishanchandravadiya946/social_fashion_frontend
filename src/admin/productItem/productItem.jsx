@@ -57,7 +57,7 @@ export default function ProductItemPage() {
           />
           <h3 className="text-xl text-black font-bold mt-2">SKU: {item.SKU}</h3>
           <p className="text-gray-600">Stock: {item.qty_in_stock}</p>
-          <p className="text-gray-800 font-semibold">Price: ${item.price.toFixed(2)}</p>
+          <p className="text-gray-800 font-semibold">Price: ₹ {item.price.toFixed(2)}</p>
            {/* Edit Button */}
            <button
               className="absolute bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
