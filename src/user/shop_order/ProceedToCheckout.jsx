@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import Navbar from "../component/navbar";
+
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutPopup from "./CheckoutForm";
+import { useNotification } from "../../shared/NotificationContext";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const stripePromise = loadStripe(
+  "pk_test_51QxVQKFwvBpwVEgwpQBGGhEStaFQO8grJgrZ8HMSFYYNn8aU85A3HdHKg4pdrbHB20IoDUax7SfR9WvBVWOFN3K700Bww6cmCY"
+);
 
 const ProceedToCheckout = () => {
   const [shippingAddresses, setShippingAddresses] = useState([]);
@@ -16,9 +25,15 @@ const ProceedToCheckout = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const [showStripeForm, setShowStripeForm] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const cartItems = location.state?.cartItems || [];
+
+  const { addNotification } = useNotification();
 
   const token = localStorage.getItem("token");
   if (!token) {
@@ -92,44 +107,62 @@ const ProceedToCheckout = () => {
     const selectedMethod = ShippingMethod.find(
       (method) => method.id == selectedShippingMethod
     );
-   if(selectedMethod){
-    total += selectedMethod.price;}
+    if (selectedMethod) {
+      total += selectedMethod.price;
+    }
 
     setTotalPrice(total);
   };
-      useEffect(() => {
+  useEffect(() => {
     calculateTotal();
   }, [selectedShippingMethod]);
 
+  const [clientSecret, setClientSecret] = useState("");
+
+  useEffect(() => {
+    
+    fetch(`${API_BASE_URL}/order/create-payment-intent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: 5000 }),
+    })
+      .then((res) => res.json())
+      .then((data) => setClientSecret(data.clientSecret));
+  }, []);
+
   const handleCheckout = async () => {
-    if (!selectedAddress || !selectedPaymentMethod) {
+    if (!selectedAddress ) {
       alert("Please select a shipping address and payment method.");
       return;
     }
-
     try {
-      const response = await fetch(`${API_BASE_URL}/checkout/place_order`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          shipping_address: selectedAddress,
-          payment_method_id: selectedPaymentMethod,
-          items: cartItems.map((item) => ({
-            product_item_id: item.id,
-            qty: item.qty,
-            price: item.price,
-          })),
-          order_total: totalPrice,
-        }),
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/order/checkout/place_order`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            shipping_address: selectedAddress,
+            shipping_method: selectedShippingMethod,
+            payment_method_id: selectedPaymentMethod,
+            items: cartItems.map((item) => ({
+              product_item_id: item.id,
+              qty: item.qty,
+              price: item.price,
+            })),
+            order_total: totalPrice,
+          }),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
-        alert("Order placed successfully!");
-        navigate("/order-confirmation");
+        // alert("Order placed successfully!");
+        addNotification("order Success 🎉","success");
+        navigate("/");
       } else {
         alert("Error placing order: " + data.message);
       }
@@ -138,7 +171,6 @@ const ProceedToCheckout = () => {
     }
   };
 
-  // console.log("aaa",setSelectedShippingMethod);
   return (
     <div>
       <Navbar />
@@ -148,7 +180,6 @@ const ProceedToCheckout = () => {
           Proceed to Checkout
         </h2>
 
-        {/* Shipping Address Section */}
         <div className="space-y-2">
           <h3 className="mt-2 text-lg font-semibold mb-4">
             Select Shipping Address
@@ -165,7 +196,6 @@ const ProceedToCheckout = () => {
                    }`}
                 onClick={() => handleSelectAddress(address.id)}
               >
-                {/* Address Details (Left Side) */}
                 <div className="flex-1">
                   <div className="text-gray-900 font-medium">
                     <p>
@@ -180,14 +210,12 @@ const ProceedToCheckout = () => {
                   </div>
                 </div>
 
-                {/* Default Badge */}
                 {defaultAddress === address.id && (
                   <span className="text-sm text-green-600 font-semibold px-2 py-1 bg-green-100 rounded-lg">
                     Default
                   </span>
                 )}
 
-                {/* Selection Checkmark (Top Right) */}
                 {selectedAddress === address.id && (
                   <FaCheckCircle className="absolute top-2 right-2 text-green-500 text-xl" />
                 )}
@@ -232,13 +260,13 @@ const ProceedToCheckout = () => {
               </div>
             ))}
             <p className="text-xl font-bold mt-2 text-right">
-              {/* {ShippingMethod.filter(
+              {ShippingMethod.filter(
                 (method) => method.id == selectedShippingMethod
               ).map((method) => (
                 <p key={method.id}>
                   {method.name} - ₹{method.price}
                 </p>
-              ))} */}
+              ))}
             </p>
             <p className="text-xl font-bold mt-2 text-right">
               Total: ₹ {totalPrice}
@@ -246,7 +274,7 @@ const ProceedToCheckout = () => {
           </div>
         </div>
 
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <h3 className="text-lg font-semibold">Select Payment Method</h3>
           <select
             className="w-full p-3 border rounded mt-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -259,14 +287,27 @@ const ProceedToCheckout = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
         {/* Checkout Button */}
-        <button
-          onClick={handleCheckout}
-          className="w-full p-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-        >
-          Place Order
-        </button>
+        <Elements stripe={stripePromise}>
+          <button
+            onClick={() => setPopupOpen(true)}
+            className="w-full bg-green-600 text-white px-4 py-2 rounded-md"
+          >
+            Payment
+          </button>
+
+          {isPopupOpen && (
+            <CheckoutPopup
+              isOpen={isPopupOpen}
+              onClose={() => setPopupOpen(false)}
+              onSuccess={() => {
+                addNotification("Payment successfull", "success");
+                setTimeout(() => handleCheckout(), 3000);
+              }}
+            />
+          )}
+        </Elements>
       </div>
     </div>
   );

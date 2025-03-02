@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useNotification } from "../shared/NotificationContext";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const SignIn = () => {
@@ -10,6 +11,8 @@ const SignIn = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+  const { addNotification } = useNotification();
 
     const togglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
@@ -35,7 +38,9 @@ const SignIn = () => {
             if (response.ok) {
                 localStorage.setItem("token", data.access_token);
                 localStorage.setItem("user_id", data.user_id);
-                // console.log(data)
+
+                addNotification("Login successful!", "success");
+                
                 setTimeout(() => navigate("/"), 1000);
             }
             else {
@@ -44,8 +49,11 @@ const SignIn = () => {
     
             
         } catch (err) {
+           localStorage.removeItem("token");
+           localStorage.removeItem("user_id");
             setError(err.message);
         } finally {
+
             setLoading(false);
         }
     };

@@ -41,9 +41,9 @@ const Product = () => {
   }, []);
   return (
     <div>
-      <Navbar  />
+      <Navbar />
       <div className="flex">
-        <div className="w-1/4 p-4 border-r border-gray-300">
+        <div className="w-1/4 p-4 border-r border-gray-300  ">
           <h2 className="text-lg font-semibold mb-4">Filters</h2>
 
           <ParentCategories
@@ -62,11 +62,11 @@ const Product = () => {
             setSelectedCategories={setSelectedCategories}
           />
         </div>
-
-        <ProductList
-          selectedCategory={selectedCategory}
-          selectedCategories={selectedCategories}
-        />
+       
+          <ProductList
+            selectedCategory={selectedCategory}
+            selectedCategories={selectedCategories}
+          />
       </div>
     </div>
   );

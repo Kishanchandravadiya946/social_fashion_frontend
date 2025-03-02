@@ -32,7 +32,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex h-screen">
-      <aside className="w-64 bg-gray-900 text-white p-5 flex flex-col">
+      <aside className="w-64 bg-gray-900 text-white p-5 flex flex-col h-screen fixed">
         <h2 className="text-xl font-bold mb-5">Admin Panel</h2>
         <nav className="space-y-4">
           {menuItems.map((item) => (
@@ -47,18 +47,17 @@ export default function AdminDashboard() {
               {item.name}
             </button>
           ))}
-        
         </nav>
       </aside>
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col ml-64">
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
           <h1 className="text-black text-xl font-semibold">Admin Dashboard</h1>
           <div className="text-black font-medium">Welcome, Admin</div>
         </header>
 
         <main className="flex-1 p-6 bg-gray-100 flex items-center justify-center">
-        <ActiveComponent />
+          <ActiveComponent />
         </main>
 
         <footer className="bg-gray-900 text-white text-center p-3">

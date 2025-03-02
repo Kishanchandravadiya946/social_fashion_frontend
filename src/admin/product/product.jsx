@@ -45,7 +45,7 @@ export default function ProductList() {
   };
 
   return (
-    <div className="flex flex-col  min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 p-8 relative">
+    <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
        <button
         onClick={() => setIsCreateModalOpen(true)}
         className="mb-6 bg-green-400 text-black font-semibold py-3 px-6 rounded-full hover:bg-green-500"

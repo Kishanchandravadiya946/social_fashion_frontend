@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../shared/NotificationContext";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const Logout = () => {
   const navigate = useNavigate();
-
+ const { addNotification } = useNotification();
   useEffect(() => {
     const handleLogout = async () => {
       try {
@@ -20,7 +21,7 @@ const Logout = () => {
         });
 
         if (response.ok) {
-
+          addNotification("Logout successful!", "success");
           navigate("/");
         } else {
           console.error("Logout failed");

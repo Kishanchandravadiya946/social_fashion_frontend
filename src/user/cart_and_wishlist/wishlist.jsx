@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaHeart, FaHeartBroken, FaTimes } from "react-icons/fa";
 import Navbar from "../component/navbar";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+import { useNotification } from "../../shared/NotificationContext";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Wishlist = () => {
   const location = useLocation();
   const { id } = location.state || {};
   const [wishlist, setWishlist] = useState([]);
   const navigate = useNavigate();
-
+  const { addNotification } = useNotification();
   // Fetch Wishlist Data
   const fetchWishlist = async () => {
     try {
@@ -35,15 +36,23 @@ const Wishlist = () => {
 
   const handleRemove = async (itemId) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/wishlist/delete/${itemId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/wishlist/delete/${itemId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
 
       if (response.ok) {
         // Re-fetch the updated wishlist
-        setWishlist([]);
-        fetchWishlist();
+        addNotification("Item remove from the wishlist", "success");
+        console.log(wishlist);
+        setWishlist((prevItems) =>
+          prevItems.filter((item) => item.wishlist_id !== itemId)
+        );
+        // setWishlist([]);
+        // fetchWishlist();
       } else {
         const data = await response.json();
         console.error(data.message);

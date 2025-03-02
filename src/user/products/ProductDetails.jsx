@@ -3,7 +3,8 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../component/navbar";
 import { FaRegHeart, FaHeart, FaShoppingBag, FaBoxOpen } from "react-icons/fa";
 import { addToCart } from "../shared/shopping_Cart";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+import { useNotification } from "../../shared/NotificationContext";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const ProductDetails = () => {
   const { userId, product: initialProduct } = location.state || {};
 
   const [product_item, setProductItem] = useState(initialProduct || null);
-
+  const { addNotification } = useNotification();
   useEffect(() => {
     if (!product_item) {
       fetchProductDetails();
@@ -52,6 +53,7 @@ const ProductDetails = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("User is not authenticated");
+      addNotification("Login required", "error");
       navigate("/login");
       return;
     }
@@ -69,6 +71,7 @@ const ProductDetails = () => {
       const data = await response.json();
       if (response.ok) {
         // console.log("Item added to wishlist:", data);
+        addNotification("Item added to wishlist", "success");
         setProductItem((prev) => ({ ...prev, wishlist: true }));
       } else {
         console.error("Error:", data.message);
@@ -77,19 +80,21 @@ const ProductDetails = () => {
       console.error("Network error:", error);
     }
   };
-   const handleAddToCart = async () => {
-      const result = await addToCart(product_item.id);
-      if (result.success) {
-        alert("Item added to cart!");
-      } else {
-        alert(result.error);
-      }
-    };
+  const handleAddToCart = async () => {
+    const result = await addToCart(product_item.id);
+    if (result.success) {
+      // alert("Item added to cart!");
+      addNotification("Item added to cart", "success");
+    } else {
+      addNotification("Login required", "error");
+      // alert(result.error);
+    }
+  };
 
   if (!product_item) {
     return (
       <div>
-        <Navbar  />
+        <Navbar />
         <div className="flex items-center justify-center h-screen bg-gray-100">
           <div className="text-center">
             <FaBoxOpen className="text-gray-400 text-6xl mx-auto mb-4" />
@@ -113,7 +118,7 @@ const ProductDetails = () => {
   }
   return (
     <div>
-      <Navbar  />
+      <Navbar />
       <div className="w-full h-screen p-8 md:p-16 bg-white-50 overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Side: Product Image */}

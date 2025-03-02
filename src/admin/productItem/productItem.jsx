@@ -32,9 +32,9 @@ export default function ProductItemPage() {
  
 // console.log(productItems);
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-900 to-blue-700">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b ">
       <div className="bg-opacity-20 bg-gray-100 p-8 rounded-xl shadow-lg w-3/4">
-        <h2 className="text-2xl font-bold text-white text-center mb-4">PRODUCT ITEMS</h2>
+        <h2 className="text-2xl font-bold text-black text-center mb-4">PRODUCT ITEMS</h2>
 
         <div className="flex justify-between mb-4">
           <button

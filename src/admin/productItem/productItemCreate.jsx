@@ -68,7 +68,7 @@ export default function ProductItemModal({ isOpen, onClose }) {
         // }
         
         // Step 4: Fetch size options
-        if (sizeVar.id) {
+        if (sizeVar && sizeVar.id) {
           const sizeResponse = await fetch(`${API_BASE_URL}/variation_option/${sizeVar.id}`);
           const sizeData = await sizeResponse.json();
           console.log(sizeData.options)

@@ -2,7 +2,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa";
 import ProfileDropdown from "./profile/profiledropdown";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
@@ -28,6 +28,10 @@ const Navbar = () => {
       if (response.ok) {
         const data = await response.json();
         setuserid(data.user_id);
+      } else {
+        // console.log("ghgvh");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user_id");
       }
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -50,11 +54,14 @@ const Navbar = () => {
             Home
           </button>
         </li>
-        {["Shop"].map((item) => (
-          <li key={item} className="hover:text-blue-600 cursor-pointer">
-            {item}
-          </li>
-        ))}
+        <li>
+          <button
+            onClick={() => navigate("/order")}
+            className="hover:text-blue-600 cursor-pointer"
+          >
+            Shop
+          </button>
+        </li>
         <li>
           <button
             onClick={() => navigate("/product")}
@@ -66,11 +73,12 @@ const Navbar = () => {
       </ul>
 
       <div className="flex gap-4">
-        {user_id&&<FaShoppingCart
-          onClick={() => navigate("/checkout/cart")}
-          className="text-xl cursor-pointer"
-        />
-        }
+        {user_id && (
+          <FaShoppingCart
+            onClick={() => navigate("/checkout/cart")}
+            className="text-xl cursor-pointer"
+          />
+        )}
 
         {user_id && (
           <button

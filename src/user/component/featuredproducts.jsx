@@ -16,7 +16,7 @@ const FeaturedProducts = () => {
       <section className="px-10 py-8">
         <h2 className="text-3xl font-bold text-center">Trending Picks</h2>
 
-        <div className="w-full overflow-x-auto whitespace-nowrap px-4">
+        <div className="mt-5 w-full overflow-x-auto whitespace-nowrap px-4">
   <div className="flex space-x-4">
     {product.map((product) => (
       <div

@@ -9,6 +9,7 @@ import Product from './user/products/products';
 import Wishlist from './user/cart_and_wishlist/wishlist';
 import CartPage from './user/cart_and_wishlist/cart';
 import ProceedToCheckout from './user/shop_order/ProceedToCheckout';
+import OrdersList from './user/shop_order/orderList';
 import ProductDetails from './user/products/ProductDetails';
 import Profile from './user/component/profile/profile';
 import CreateCategory from './admin/productCategory/productCategoryCreate';
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout/cart" element={<CartPage />} />
         <Route path="/checkout" element={<ProceedToCheckout />} />
+        <Route path="/order" element={<OrdersList/>}/>
         <Route path="/product/:name/:id" element={<ProductDetails />} />
         <Route path="/profile" element={<Profile />} />
         {/* 

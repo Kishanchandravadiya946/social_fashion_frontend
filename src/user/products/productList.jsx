@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+import { useNotification } from "../../shared/NotificationContext";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProductList = ({ selectedCategory, selectedCategories }) => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const queryParams = new URLSearchParams();
+const {addNotification}=useNotification()
+
   if (selectedCategories.length > 0) {
     queryParams.append(
       "f",
@@ -24,10 +27,15 @@ const ProductList = ({ selectedCategory, selectedCategories }) => {
             Authorization: `Bearer ${token}`,
           }
         : {};
+
+        const url = selectedCategory?.id
+          ? `${API_BASE_URL}/product_item/category/${
+              selectedCategory.id
+            }?${queryParams.toString()}`
+          : `${API_BASE_URL}/product_item/category/?${queryParams.toString()}`;
+          console.log(url);
       const response = await fetch(
-        `${API_BASE_URL}/product_item/category/${
-          selectedCategory.id
-        }?${queryParams.toString()}`,
+        url,
         {
           method: "GET",
           headers: headers,
@@ -44,7 +52,7 @@ const ProductList = ({ selectedCategory, selectedCategories }) => {
     }
   };
   useEffect(() => {
-    if (!selectedCategory) return;
+    // if (!selectedCategory) return;
     // console.log(selectedCategories);
     fetchProducts();
   }, [selectedCategory]);
@@ -76,6 +84,8 @@ const ProductList = ({ selectedCategory, selectedCategories }) => {
       const data = await response.json();
       if (response.ok) {
         // console.log("Item added to wishlist:", data);
+        addNotification("Item added to wishlist", "success");
+
         setProducts((prevItems) =>
           prevItems.map((item) =>
             item.id === productItemId ? { ...item, wishlist: true } : item
@@ -99,7 +109,7 @@ const ProductList = ({ selectedCategory, selectedCategories }) => {
             className="border p-4 rounded shadow-md transition-transform duration-300 hover:shadow-lg hover:scale-100 cursor-pointer"
             onClick={() =>
               navigate(`/product/${product.product.name}/${product.id}`, {
-                state: {  product: product },
+                state: { product: product },
               })
             }
           >

@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import QuantityPopup from "./quantitypopup";
 import { addToCart } from "../shared/shopping_Cart";
 import { FaTimes } from "react-icons/fa";
+import { useNotification } from "../../shared/NotificationContext";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const ShoppingCart = ({ cartItems, setCartItems }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedQty, setSelectedQty] = useState(1);
+  const {addNotification}=useNotification();
 // console.log(cartItems);
   const navigate = useNavigate();
 
@@ -44,6 +46,7 @@ const ShoppingCart = ({ cartItems, setCartItems }) => {
       //  console.log(data);
         if (response.ok) {
           // console.log("ggg");
+          addNotification("Item remove from the cart", "success");
           setCartItems((prevItems) =>
             prevItems.filter((item) => item.cart_item_id !== cartItemId)
           );
