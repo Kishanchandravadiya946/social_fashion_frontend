@@ -26,6 +26,7 @@ const OrdersList = () => {
 
         const data = await response.json();
         setOrders(data);
+        // console.log(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -98,7 +99,10 @@ const OrdersList = () => {
                         <img
                           src={item.product_image}
                           alt={item.product_name}
-                          className="w-16 h-16 object-cover rounded-md"
+                          className="w-16 h-16 object-cover rounded-md cursor-pointer"
+                          onClick={() =>
+                            navigate(`/product/${item.product_name}/${item.id}`)
+                          }
                         />
                         <div>
                           <h5 className="font-medium">{item.product_name}</h5>

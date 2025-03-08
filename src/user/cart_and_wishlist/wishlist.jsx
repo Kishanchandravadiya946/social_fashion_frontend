@@ -47,7 +47,7 @@ const Wishlist = () => {
       if (response.ok) {
         // Re-fetch the updated wishlist
         addNotification("Item remove from the wishlist", "success");
-        console.log(wishlist);
+        // console.log(wishlist);
         setWishlist((prevItems) =>
           prevItems.filter((item) => item.wishlist_id !== itemId)
         );

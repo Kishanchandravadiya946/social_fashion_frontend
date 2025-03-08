@@ -3,7 +3,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const CheckoutPopup = ({ isOpen, onClose, onSuccess }) => {
+const CheckoutPopup = ({ isOpen, onClose,total, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const CheckoutPopup = ({ isOpen, onClose, onSuccess }) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ amount: 5000 }),
+          body: JSON.stringify({ amount: total }),
         }
       );
 

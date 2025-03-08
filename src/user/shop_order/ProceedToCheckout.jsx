@@ -117,18 +117,18 @@ const ProceedToCheckout = () => {
     calculateTotal();
   }, [selectedShippingMethod]);
 
-  const [clientSecret, setClientSecret] = useState("");
+  // const [clientSecret, setClientSecret] = useState("");
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    fetch(`${API_BASE_URL}/order/create-payment-intent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 5000 }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+  //   fetch(`${API_BASE_URL}/order/create-payment-intent`, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ amount: 5000 }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => setClientSecret(data.clientSecret));
+  // }, []);
 
   const handleCheckout = async () => {
     if (!selectedAddress ) {
@@ -301,6 +301,7 @@ const ProceedToCheckout = () => {
             <CheckoutPopup
               isOpen={isPopupOpen}
               onClose={() => setPopupOpen(false)}
+              total={totalPrice}
               onSuccess={() => {
                 addNotification("Payment successfull", "success");
                 setTimeout(() => handleCheckout(), 3000);
