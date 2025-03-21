@@ -12,6 +12,8 @@ const Logout = () => {
         const token = localStorage.getItem("token");
         localStorage.removeItem("token");
         localStorage.removeItem("user_id");
+        localStorage.removeItem("role");
+        
         if(token){
         const response = await fetch(`${API_BASE_URL}/user/logout`, {
           method: "POST",

@@ -38,9 +38,9 @@ const SignIn = () => {
             if (response.ok) {
                 localStorage.setItem("token", data.access_token);
                 localStorage.setItem("user_id", data.user_id);
-
+                localStorage.setItem("role", data.role);
+                // console.log(data);
                 addNotification("Login successful!", "success");
-                
                 setTimeout(() => navigate("/"), 1000);
             }
             else {
