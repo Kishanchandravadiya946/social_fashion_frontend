@@ -19,7 +19,7 @@ export default function HomePage() {
     return <div>Loading...</div>;
   }
 
-  if (id == 1) {
+  if (id == 2) {
     return <AdminDashboard/>; 
   } else {
     return <HomeDashboard />;
