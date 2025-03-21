@@ -139,7 +139,7 @@ const SignIn = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 text-center text-blue-900 bg-green-400 rounded-full font-bold hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 text-center text-white bg-green-400 rounded-full font-bold hover:bg-green-400"
               disabled={loading}
             >
               {loading ? "Signing In..." : "Sign In"}

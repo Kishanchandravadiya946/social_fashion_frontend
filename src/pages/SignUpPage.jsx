@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { useNotification } from "../shared/NotificationContext";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +18,7 @@ const SignUp = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -59,7 +60,7 @@ const SignUp = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccess("User created successfully!");
+        // setSuccess("User created successfully!");
         setFormData({
           username: "",
           email: "",
@@ -67,15 +68,19 @@ const SignUp = () => {
           password: "",
           confirmPassword: "",
         });
-        setTimeout(() => navigate("/login"), 1000);
+        addNotification("Verify with Your Email!", "success");
+        setTimeout(
+          () => navigate(`/verify?email=${encodeURIComponent(formData.email)}`),
+          1000
+        );
       } else {
         setError(data.error || "Something went wrong.");
-      }  
-    } 
-    catch (error) {
+      }
+    } catch (error) {
       setError("Network error. Please try again.");
-    }finally{
-    setLoading(false);}
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -96,7 +101,6 @@ const SignUp = () => {
           </button>
         </div>
 
-       
         {success && <p className="text-green-500 text-center">{success}</p>}
 
         <form className="space-y-6" onSubmit={handleSubmit}>
@@ -163,7 +167,9 @@ const SignUp = () => {
               onClick={togglePasswordVisibility}
               className="absolute inset-y-0 right-3 flex items-center text-white"
             >
-              <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+              <i
+                className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+              ></i>
             </button>
           </div>
 
@@ -185,15 +191,19 @@ const SignUp = () => {
               onClick={toggleConfirmPasswordVisibility}
               className="absolute inset-y-0 right-3 flex items-center text-white"
             >
-              <i className={`fas ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+              <i
+                className={`fas ${
+                  showConfirmPassword ? "fa-eye-slash" : "fa-eye"
+                }`}
+              ></i>
             </button>
           </div>
           {error && <p className="text-red-500 text-center">{error}</p>}
           <button
             type="submit"
-            className="w-full py-3 text-center text-blue-900 bg-green-400 rounded-full font-bold hover:bg-green-500"
+            className="w-full py-3 text-center text-white bg-green-400 rounded-full font-bold hover:bg-green-500"
             disabled={loading}
-          > 
+          >
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
