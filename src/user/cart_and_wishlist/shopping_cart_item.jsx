@@ -74,7 +74,7 @@ const ShoppingCart = ({ cartItems, setCartItems }) => {
     }
   };
   return (
-    <div className="w-full md:w-2/3 p-4 bg-white rounded-lg shadow-md">
+    <div className="h-screen overflow-y-auto w-full md:w-2/3 p-4 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
       {!cartItems?.length ? (
         <p className="text-gray-500 text-center">Your cart is empty.</p>

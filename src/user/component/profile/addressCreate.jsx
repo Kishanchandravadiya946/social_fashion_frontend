@@ -70,33 +70,79 @@ export default function AddressCreate({ onClose, onAddressAdded }) {
 
   return (
     <Modal onClose={onClose} title="Add New Address">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input name="unit_number" label="Unit Number" value={formData.unit_number} onChange={handleChange} />
-        <Input name="street_number" label="Street Number" value={formData.street_number} onChange={handleChange} />
-        <Input name="address_line1" label="Address Line 1" value={formData.address_line1} onChange={handleChange} required />
-        <Input name="address_line2" label="Address Line 2" value={formData.address_line2} onChange={handleChange} />
-        <Input name="city" label="City" value={formData.city} onChange={handleChange} required />
-        <Input name="region" label="Region" value={formData.region} onChange={handleChange} required />
-        <Input name="postal_code" label="Postal Code" value={formData.postal_code} onChange={handleChange} required />
-        <div>
-          <label className="text-gray-700 font-medium">Country</label>
-          <select
-            name="country_id"
-            value={formData.country_id}
+      <div className="max-h-[70vh] overflow-y-auto p-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Input
+            name="unit_number"
+            label="Unit Number"
+            value={formData.unit_number}
+            onChange={handleChange}
+          />
+          <Input
+            name="street_number"
+            label="Street Number"
+            value={formData.street_number}
+            onChange={handleChange}
+          />
+          <Input
+            name="address_line1"
+            label="Address Line 1"
+            value={formData.address_line1}
             onChange={handleChange}
             required
-            className="border p-2 rounded-lg w-full"
+          />
+          <Input
+            name="address_line2"
+            label="Address Line 2"
+            value={formData.address_line2}
+            onChange={handleChange}
+          />
+          <Input
+            name="city"
+            label="City"
+            value={formData.city}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="region"
+            label="Region"
+            value={formData.region}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            name="postal_code"
+            label="Postal Code"
+            value={formData.postal_code}
+            onChange={handleChange}
+            required
+          />
+          <div>
+            <label className="text-gray-700 font-medium">Country</label>
+            <select
+              name="country_id"
+              value={formData.country_id}
+              onChange={handleChange}
+              required
+              className="border p-2 rounded-lg w-full"
+            >
+              <option value="">Select a country</option>
+              {countries.map((country) => (
+                <option key={country.id} value={country.id}>
+                  {country.country_name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <Button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
-            <option value="">Select a country</option>
-            {countries.map((country) => (
-              <option key={country.id} value={country.id}>
-                {country.country_name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <Button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Create Address</Button>
-      </form>
+            Create Address
+          </Button>
+        </form>
+      </div>
     </Modal>
   );
 }

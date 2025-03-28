@@ -6,7 +6,7 @@ import Button from "./button";
 import { FaUser, FaHeart, FaSignOutAlt, FaCog } from "react-icons/fa"; // Import icons
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
-export default function ProfileDropdown({ user_id }) {
+export default function ProfileDropdown({ user_id, mobile }) {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate(); // Initialize navigate
@@ -39,10 +39,18 @@ export default function ProfileDropdown({ user_id }) {
       console.error("Error fetching user:", error);
     }
   };
+  const abc = async () => {
+    try {
+      console.log("abccccccccccccccccccccc");
+      setIsOpen(!isOpen);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
 
   return (
-    <div className="relative">
-      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center">
+    <div className="relative" onClick={(e) => e.stopPropagation()}>
+      <button onClick={() => abc()} className="flex items-center">
         <Avatar
           name={user?.username}
           src={user?.profilePicture}
@@ -50,7 +58,7 @@ export default function ProfileDropdown({ user_id }) {
         />
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50">
+        <div className={`${mobile ? "relative":"absolute"} right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-50`}>
           <Card>
             <CardContent className="p-2">
               <div className="flex items-center p-2">

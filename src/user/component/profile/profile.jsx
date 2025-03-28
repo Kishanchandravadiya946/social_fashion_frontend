@@ -222,7 +222,7 @@ export default function Profile() {
                         <button
                           className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100"
                           onClick={() => {
-                            console.log(address.id);
+                            // console.log(address.id);
                             handleSetDefaultAddress(address.id);
                             setDropdownOpen(null);
                           }}

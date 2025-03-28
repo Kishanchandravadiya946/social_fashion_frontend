@@ -46,38 +46,49 @@ export default function ProductList() {
 
   return (
     <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
-       <button
+      <button
         onClick={() => setIsCreateModalOpen(true)}
         className="mb-6 bg-green-400 text-black font-semibold py-3 px-6 rounded-full hover:bg-green-500"
       >
         + Create New Product
       </button>
-      {isCreateModalOpen && <CreateProductModal onClose={() => setIsCreateModalOpen(false)} />}
+      {isCreateModalOpen && (
+        <CreateProductModal onClose={() => setIsCreateModalOpen(false)} />
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <div key={product.id} className="bg-white p-4 rounded-lg shadow-lg relative">
-            <img src={product.product_image || "https://via.placeholder.com/150"} alt={product.name} className="w-full h-48 object-cover rounded-md" />
-            <h3 className="text-xl text-black font-bold mt-2">{product.name}</h3>
+          <div
+            key={product.id}
+            className="bg-white p-4 rounded-lg shadow-lg relative"
+          >
+            <img
+              src={product.product_image || "https://via.placeholder.com/150"}
+              alt={product.name}
+              className="w-full h-48 object-cover rounded-md"
+            />
+            <h3 className="text-xl text-black font-bold mt-2">
+              {product.name}
+            </h3>
             <p className="text-gray-600">{product.description}</p>
             <button
               onClick={() => {
-                handleEditClick(product)
+                handleEditClick(product);
               }}
-              className="absolute bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+              className="mt-3 mb-3 absolute bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
             >
               Edit
             </button>
             <button
-                onClick={() => handleDeleteClick(product)}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-              >
-                Delete
-              </button>
+              onClick={() => handleDeleteClick(product)}
+              className="bg-red-500 text-white px-4 py-2 mt-3 mb-3 rounded-lg hover:bg-red-600"
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
-      
+
       {isEditModalOpen && (
         <ProductUpdateModal
           product={selectedProduct}

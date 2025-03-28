@@ -50,9 +50,10 @@ export default function CreateCategory({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-black text-center mb-4">CREATE CATEGORY</h2>
+    <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
+        <h2 className="text-2xl font-bold text-black text-center mb-4">
+          CREATE CATEGORY
+        </h2>
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         <form onSubmit={handleCreateCategory} className="space-y-4">
@@ -87,10 +88,12 @@ export default function CreateCategory({ isOpen, onClose }) {
           </button>
         </form>
 
-        <button onClick={onClose} className="mt-4 w-full bg-gray-400 text-white py-2 rounded-lg">
+        <button
+          onClick={onClose}
+          className="mt-4 w-full bg-red-400 text-white py-2 rounded-lg"
+        >
           Close
         </button>
-      </div>
     </div>
   );
 }

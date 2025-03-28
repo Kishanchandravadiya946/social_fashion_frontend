@@ -101,7 +101,9 @@ const OrdersList = () => {
                           alt={item.product_name}
                           className="w-16 h-16 object-cover rounded-md cursor-pointer"
                           onClick={() =>
-                            navigate(`/product/${item.product_name}/${item.id}`)
+                            navigate(
+                              `/product/${item.product_name}/${item.product_id}`
+                            )
                           }
                         />
                         <div>

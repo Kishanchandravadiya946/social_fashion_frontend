@@ -32,9 +32,11 @@ export default function ProductItemPage() {
  
 // console.log(productItems);
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b ">
-      <div className="bg-opacity-20 bg-gray-100 p-8 rounded-xl shadow-lg w-3/4">
-        <h2 className="text-2xl font-bold text-black text-center mb-4">PRODUCT ITEMS</h2>
+    <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
+      <div className="bg-opacity-20 bg-gray-100 ">
+        <h2 className="text-2xl font-bold text-black text-center mb-4">
+          PRODUCT ITEMS
+        </h2>
 
         <div className="flex justify-between mb-4">
           <button
@@ -43,51 +45,60 @@ export default function ProductItemPage() {
           >
             +Create Product Item
           </button>
-          <ProductItemModal isOpen={isProductItemOpen} onClose={() => setProductItemOpen(false)} />
+          <ProductItemModal
+            isOpen={isProductItemOpen}
+            onClose={() => setProductItemOpen(false)}
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      
-      {productItems.map((item) => (
-        <div key={item.id} className="bg-white p-4 rounded-lg shadow-lg relative">
-          <img
-            src={item.product_image || "https://via.placeholder.com/150"}
-            alt={item.SKU}
-            className="w-full h-48 object-cover rounded-md"
-          />
-          <h3 className="text-xl text-black font-bold mt-2">SKU: {item.SKU}</h3>
-          <p className="text-gray-600">Stock: {item.qty_in_stock}</p>
-          <p className="text-gray-800 font-semibold">Price: ₹ {item.price.toFixed(2)}</p>
-           {/* Edit Button */}
-           <button
-              className="absolute bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-              onClick={() => {
-                setSelectedProductItem(item);
-                setIsUpdateModalOpen(true);
-              }}
+          {productItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white p-4 rounded-lg shadow-lg relative"
             >
-              Edit
-            </button>
-            <button
-              className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"
-              onClick={() => {
-                setSelectedProductItem(item);
-                setIsDeleteModalOpen(true);
-              }}
-            >
-              Delete
-            </button>
+              <img
+                src={item.product_image || "https://via.placeholder.com/150"}
+                alt={item.SKU}
+                className="w-full h-48 object-cover rounded-md"
+              />
+              <h3 className="text-xl text-black font-bold mt-2">
+                SKU: {item.SKU}
+              </h3>
+              <p className="text-gray-600">Stock: {item.qty_in_stock}</p>
+              <p className="text-gray-800 font-semibold">
+                Price: ₹ {item.price.toFixed(2)}
+              </p>
+              {/* Edit Button */}
+              <button
+                className="mt-3 mb-3 absolute bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                onClick={() => {
+                  setSelectedProductItem(item);
+                  setIsUpdateModalOpen(true);
+                }}
+              >
+                Edit
+              </button>
+              <button
+                className="mt-3 mb-3  bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"
+                onClick={() => {
+                  setSelectedProductItem(item);
+                  setIsDeleteModalOpen(true);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-    </div>
-    <ProductItemUpdate
-      isOpen={isUpdateModalOpen}
-      onClose={() => setIsUpdateModalOpen(false)}
-      productItem={selectedProductItem}
-      refreshProductItems={fetchProductItems}
-    />
-     <ProductItemDelete
+      </div>
+      <ProductItemUpdate
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        productItem={selectedProductItem}
+        refreshProductItems={fetchProductItems}
+      />
+      <ProductItemDelete
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         productItem={selectedProductItem}

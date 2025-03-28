@@ -61,9 +61,13 @@ export default function VariationList() {
 
 
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-lg p-6 rounded-lg">
+    <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-black text-2xl font-semibold">Variations</h2>
+        <h2 className="text-black text-2xl font-semibold space-y-4">
+          Variations
+        </h2>
+      </div>
+      <div className="mb-4 w-full bg-gray-100 p-4 rounded-lg  flex justify-between items-center space-y-4">
         <button
           onClick={() => setVariationModalOpen(true)}
           className="bg-blue-400 text-black py-3 px-6 rounded-full"
@@ -73,6 +77,7 @@ export default function VariationList() {
       </div>
 
       {/* Popup for Creating Variation */}
+
       <CreateVariationPopup
         isOpen={isVariationModalOpen}
         onClose={() => setVariationModalOpen(false)}
@@ -89,18 +94,19 @@ export default function VariationList() {
         <div className="space-y-4">
           {variations.map((variation) => (
             <div
-            key={variation.id}
-            className="w-full bg-gray-100 p-4 rounded-lg shadow-sm flex justify-between items-center"
-          >
-            {/* Variation Name */}
-            <span className="text-lg text-black font-medium">{variation.name}</span>
-          
-            {/* Category Name Box */}
-            <span className="bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg">
-              {variation.categoryName}
-            </span>
-          </div>
-          
+              key={variation.id}
+              className="w-full bg-gray-100 p-4 rounded-lg shadow-sm flex justify-between items-center border-2 border-blue-500"
+            >
+              {/* Variation Name */}
+              <span className="p-2 text-lg text-black font-medium">
+                {variation.name}
+              </span>
+
+              {/* Category Name Box */}
+              <span className="bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg">
+                {variation.categoryName}
+              </span>
+            </div>
           ))}
         </div>
       )}

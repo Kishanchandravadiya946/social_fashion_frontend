@@ -32,16 +32,16 @@ export const useNotification = () => {
 
 const NotificationList = ({ notifications }) => {
   return (
-    <div className="fixed top-5 left-1/2 transform -translate-x-1/2 w-full max-w-md flex flex-col items-center space-y-3 z-50">
+    <div className="fixed top-5 left-1/2 transform -translate-x-1/2  max-w-[80%] sm:max-w-md flex flex-col items-center space-y-3 z-50">
       <AnimatePresence>
         {notifications.map((notification) => (
           <motion.div
             key={notification.id}
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }} 
-            exit={{ opacity: 0, y: -20, scale: 0.95 }} 
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className={`w-80 flex items-center space-x-3 px-4 py-3 rounded-lg border-l-4 shadow-lg text-gray-900 font-medium bg-white backdrop-blur-md ${
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg border-l-4 shadow-lg text-gray-900 font-medium bg-white backdrop-blur-md ${
               notification.type === "success"
                 ? "border-green-500"
                 : notification.type === "error"

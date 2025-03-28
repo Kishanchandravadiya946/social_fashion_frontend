@@ -51,22 +51,23 @@ export default function ProductCategoryList() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-lg p-6 rounded-lg">
-      <h2 className="text-2xl text-black font-semibold">Product Categories</h2>
+    <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
+      <h2 className="mb-4 text-2xl text-black font-semibold space-y-4">
+        Product Categories
+      </h2>
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4 w-full bg-gray-100 p-4 rounded-lg  flex justify-between items-center ">
         <button
           onClick={() => setCategoryModalOpen(true)}
-          className="mb-6 bg-blue-400 text-black py-3 px-6 rounded-full"
+          className=" bg-blue-400 p-4 text-black py-3 px-6 rounded-full"
         >
           + Create New Category
         </button>
-        <CreateCategory
-          isOpen={isCategoryModalOpen}
-          onClose={() => setCategoryModalOpen(false)}
-        />
       </div>
-
+      <CreateCategory
+        isOpen={isCategoryModalOpen}
+        onClose={() => setCategoryModalOpen(false)}
+      />
       {loading ? (
         <p className="text-gray-500">Loading categories...</p>
       ) : error ? (
@@ -79,9 +80,9 @@ export default function ProductCategoryList() {
             {categories.map((category) => (
               <div
                 key={category.id}
-                className="w-full bg-gray-100 p-4 rounded-lg shadow-sm flex items-center justify-between"
+                className="w-full bg-gray-100 p-4 rounded-lg shadow-sm flex items-center justify-between border-2 border-blue-500"
               >
-                <span className="text-black font-medium ">
+                <span className="text-black font-medium p-2">
                   {category.category_name}
                 </span>
                 <div className="flex gap-4">

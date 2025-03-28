@@ -68,9 +68,12 @@ export default function VariationOptionList() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-lg p-6 rounded-lg">
+    <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-black text-2xl font-semibold">Variation Options</h2>
+      </div>
+
+      <div className=" mb-4 w-full bg-gray-100 p-4 rounded-lg  flex justify-between items-center ">
         <button
           onClick={() => setVariationOptionModalOpen(true)}
           className="bg-blue-400 text-black py-3 px-6 rounded-full"
@@ -78,7 +81,6 @@ export default function VariationOptionList() {
           + Create New Option
         </button>
       </div>
-
       {/* Popup for Creating Variation Option */}
       <VariationOptionCreate
         isOpen={isVariationOptionModalOpen}
@@ -91,23 +93,27 @@ export default function VariationOptionList() {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : variationOptions.length === 0 ? (
-        <p className="text-gray-500 text-center">No variation options available.</p>
+        <p className="text-gray-500 text-center">
+          No variation options available.
+        </p>
       ) : (
         <div className="space-y-4">
           {variationOptions.map((option) => (
-           <div
-           key={option.id}
-           className="w-full flex items-center rounded-lg shadow-sm border"
-         >
-      
-           <div className="w-1/3 bg-blue-200 text-blue-900 font-semibold px-4 py-3 rounded-l-lg flex justify-center items-center">
-            {option.value}
-          </div>
-    
-          <div className="w-2/3 bg-green-200 text-green-900 font-semibold px-4 py-3 rounded-r-lg flex justify-center items-center">
-            {option.variation_name} -- {option.category_name}
-          </div>
-         </div>
+            <div
+              key={option.id}
+              className="w-full flex items-center rounded-lg shadow-sm border border-2 border-blue-500"
+            >
+              <div className="p-2 w-1/3 bg-blue-200 text-blue-900 font-semibold  py-3 rounded-l-lg flex justify-center items-center">
+                {option.value}
+              </div>
+
+              <div className="w-2/3 bg-green-200 text-green-900 font-semibold  py-3 rounded-r-lg flex justify-center items-center">
+                <span className="bg-blue-500 px-3 py-1 rounded-lg">
+                  {option.variation_name}
+                </span>{" "}
+                -- {option.category_name}
+              </div>
+            </div>
           ))}
         </div>
       )}
