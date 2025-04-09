@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuantityPopup from "./quantitypopup";
-import { addToCart } from "../shared/shopping_Cart";
+import { addToCart } from "../sharedCart/shopping_cart";
 import { FaTimes } from "react-icons/fa";
 import { useNotification } from "../../shared/NotificationContext";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ShoppingCart = ({ cartItems, setCartItems }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedQty, setSelectedQty] = useState(1);
-  const {addNotification}=useNotification();
-// console.log(cartItems);
+  const { addNotification } = useNotification();
+  // console.log(cartItems);
   const navigate = useNavigate();
 
   const openPopup = (item) => {
@@ -25,38 +25,37 @@ const ShoppingCart = ({ cartItems, setCartItems }) => {
     setSelectedItem(null);
   };
   const token = localStorage.getItem("token");
-   if (!token) {
-     console.error("User is not authenticated");
-     return { error: "User is not authenticated" };
-   }
- const deleteItem = async (cartItemId) => {
-     try {
-       const response = await fetch(
-         `${API_BASE_URL}/shopping_cart/remove/${cartItemId}`,
-         {
-           method: "DELETE",
-           headers: {
-             "Content-Type": "application/json",
-             Authorization: `Bearer ${token}`,
-           },
-         }
-       );
-
-       const data =  await response.json();
-      //  console.log(data);
-        if (response.ok) {
-          // console.log("ggg");
-          addNotification("Item remove from the cart", "success");
-          setCartItems((prevItems) =>
-            prevItems.filter((item) => item.cart_item_id !== cartItemId)
-          );
+  if (!token) {
+    console.error("User is not authenticated");
+    return { error: "User is not authenticated" };
+  }
+  const deleteItem = async (cartItemId) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/shopping_cart/remove/${cartItemId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-     } catch (error) {
-       console.error("Error removing item:", error);
-       return { success: false };
-     }
-  
- };
+      );
+
+      const data = await response.json();
+      //  console.log(data);
+      if (response.ok) {
+        // console.log("ggg");
+        addNotification("Item remove from the cart", "success");
+        setCartItems((prevItems) =>
+          prevItems.filter((item) => item.cart_item_id !== cartItemId)
+        );
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+      return { success: false };
+    }
+  };
   const updateQuantity = async () => {
     if (selectedItem) {
       const result = await addToCart(selectedItem.id, selectedQty);
