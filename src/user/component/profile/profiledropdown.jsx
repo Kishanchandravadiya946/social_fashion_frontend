@@ -41,7 +41,7 @@ export default function ProfileDropdown({ user_id, mobile }) {
   };
   const abc = async () => {
     try {
-      console.log("abccccccccccccccccccccc");
+      // console.log("abccccccccccccccccccccc");
       setIsOpen(!isOpen);
     } catch (error) {
       console.error("Error fetching user:", error);

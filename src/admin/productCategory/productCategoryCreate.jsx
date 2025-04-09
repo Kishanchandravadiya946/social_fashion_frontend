@@ -50,10 +50,12 @@ export default function CreateCategory({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 relative">
         <h2 className="text-2xl font-bold text-black text-center mb-4">
           CREATE CATEGORY
         </h2>
+
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         <form onSubmit={handleCreateCategory} className="space-y-4">
@@ -62,12 +64,12 @@ export default function CreateCategory({ isOpen, onClose }) {
             placeholder="Category Name"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
             required
           />
 
           <select
-            className="w-full px-4 py-2 border rounded-lg"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
             value={parentCategory || ""}
             onChange={(e) => setParentCategory(e.target.value || null)}
           >
@@ -90,10 +92,11 @@ export default function CreateCategory({ isOpen, onClose }) {
 
         <button
           onClick={onClose}
-          className="mt-4 w-full bg-red-400 text-white py-2 rounded-lg"
+          className="mt-4 w-full bg-red-400 text-white py-2 rounded-lg hover:bg-red-500"
         >
           Close
         </button>
+      </div>
     </div>
   );
 }

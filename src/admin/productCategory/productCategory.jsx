@@ -56,10 +56,10 @@ export default function ProductCategoryList() {
         Product Categories
       </h2>
 
-      <div className="mb-4 w-full bg-gray-100 p-4 rounded-lg  flex justify-between items-center ">
+      <div className="flex justify-between items-center mb-4 ">
         <button
           onClick={() => setCategoryModalOpen(true)}
-          className=" bg-blue-400 p-4 text-black py-3 px-6 rounded-full"
+          className=" bg-blue-400 mb-6 text-black py-3 px-6 rounded-full"
         >
           + Create New Category
         </button>

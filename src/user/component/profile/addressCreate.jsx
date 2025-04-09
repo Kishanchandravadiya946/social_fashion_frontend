@@ -29,7 +29,7 @@ export default function AddressCreate({ onClose, onAddressAdded }) {
         if (!response.ok) throw new Error("Failed to fetch countries");
 
         const data = await response.json();
-        console.log(data)
+        // console.log(data)
         setCountries(data); // Assuming data is an array of { id, name }
       } catch (error) {
         console.error("Error fetching countries:", error);

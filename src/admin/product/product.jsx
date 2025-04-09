@@ -6,6 +6,7 @@ import ProductDeleteModal from "./productDelete"
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 export default function ProductList() {
+  const [loading,setloading]=useState(true);
   const [products, setProducts] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -23,7 +24,9 @@ export default function ProductList() {
       const data = await response.json();
       
       setProducts(data);
+      setloading(false);
     } catch (err) {
+      setloading(false);
       console.error(err.message);
     }
   };
@@ -44,7 +47,32 @@ export default function ProductList() {
     setIsDeleteModalOpen(true);
   };
 
-  return (
+  return loading ? (
+    <div className="flex items-center justify-center  bg-gray-100 p-4">
+      <div className="text-center">
+        <svg
+          className="animate-spin h-10 w-10 text-pink-500 mx-auto mb-4"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+            fill="none"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8z"
+          />
+        </svg>
+        <h2 className="text-lg text-gray-600">Loading product...</h2>
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col  min-h-screen bg-gradient-to-b  p-8 relative">
       <button
         onClick={() => setIsCreateModalOpen(true)}

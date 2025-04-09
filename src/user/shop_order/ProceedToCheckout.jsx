@@ -164,7 +164,8 @@ const ProceedToCheckout = () => {
         addNotification("order Success 🎉","success");
         navigate("/");
       } else {
-        alert("Error placing order: " + data.message);
+        addNotification("order not proceed", "error");
+        // alert("Error placing order: " + data.message);
       }
     } catch (error) {
       console.error("Error during checkout:", error);
@@ -292,7 +293,12 @@ const ProceedToCheckout = () => {
         <Elements stripe={stripePromise}>
           <button
             onClick={() => setPopupOpen(true)}
-            className="w-full bg-green-600 text-white px-4 py-2 rounded-md"
+            className={`w-full px-4 py-2 rounded-md transition-colors duration-300 ${
+              selectedAddress && selectedShippingMethod
+                ? "bg-green-600 text-white hover:bg-green-700"
+                : "bg-gray-300 text-gray-600 cursor-not-allowed"
+            }`}
+            disabled={!selectedAddress || !selectedShippingMethod}
           >
             Payment
           </button>
@@ -304,7 +310,7 @@ const ProceedToCheckout = () => {
               total={totalPrice}
               onSuccess={() => {
                 addNotification("Payment successfull", "success");
-                setTimeout(() => handleCheckout(), 3000);
+                setTimeout(() => handleCheckout(), 10);
               }}
             />
           )}

@@ -9,6 +9,7 @@ const Wishlist = () => {
   const location = useLocation();
   const { id } = location.state || {};
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setloading] = useState(true);
   const navigate = useNavigate();
   const { addNotification } = useNotification();
   // Fetch Wishlist Data
@@ -22,10 +23,13 @@ const Wishlist = () => {
       if (response.ok) {
         // console.log(data.Wishlist_product_items);
         setWishlist(data.Wishlist_product_items);
+        setloading(false);
       } else {
+        setloading(false);
         console.error(data.message);
       }
     } catch (error) {
+      setloading(false);
       console.error("Error fetching wishlist:", error);
     }
   };
@@ -65,7 +69,7 @@ const Wishlist = () => {
   return (
     <div>
       <Navbar />
-      <div className="h-screen overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+      <div className=" overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
         {wishlist.length > 0 ? (
           wishlist.map((item) => (
             <div
@@ -96,7 +100,26 @@ const Wishlist = () => {
               </div>
             </div>
           ))
-        ) : (
+        ) : loading? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+         {[...Array(8)].map((_, index) => (
+           <div
+             key={index}
+             className="border p-4 rounded-lg shadow-md animate-pulse space-y-3"
+           >
+             <div className="w-full h-48 bg-gray-300 rounded-lg"></div>
+             <div className="h-4 bg-gray-300 rounded w-3/4 mt-2"></div>
+             <div className="h-3 bg-gray-200 rounded w-full"></div>
+             <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+
+             <div className="flex items-center justify-between mt-3">
+               <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+               <div className="h-6 w-6 bg-gray-300 rounded-full"></div>
+             </div>
+           </div>
+         ))}
+       </div>
+        ):(
           <p className="flex flex-col items-center justify-center col-span-full text-gray-500 py-10">
             <FaHeartBroken className="text-gray-400 text-5xl mb-3" />
             <span className="text-xl font-semibold">No items in wishlist</span>

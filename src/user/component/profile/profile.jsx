@@ -94,7 +94,7 @@ export default function Profile() {
 
   const handleSetDefaultAddress = async (addressId) => {
     try {
-      console.log(addressId)
+      // console.log(addressId)
       const response = await fetch(`${API_BASE_URL}/user/set-default-address/${addressId}`, {
         method: "PUT",
         headers: {

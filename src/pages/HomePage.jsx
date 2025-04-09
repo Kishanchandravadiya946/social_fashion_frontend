@@ -15,7 +15,7 @@ export default function HomePage() {
     // console.log(user_id);
     setUserId(user_id);
     setRole(role);
-    console.log(role);
+    // console.log(role);
     setLoading(false);
   }, [navigate]);
 

@@ -13,13 +13,12 @@ const ProductDetails = () => {
 
   const { userId, product: initialProduct } = location.state || {};
   const [product_item, setProductItem] = useState(initialProduct || null);
+  const [loading, setloading] = useState(true);
   const { addNotification } = useNotification();
 
   useEffect(() => {
-    if (!product_item) {
       fetchProductDetails();
-    }
-  }, [product_item]);
+  }, []);
 
   const fetchProductDetails = async () => {
     try {
@@ -35,8 +34,10 @@ const ProductDetails = () => {
       }
       const data = await response.json();
       setProductItem(data.product_item);
+      setloading(false);
     } catch (error) {
       setProductItem(null);
+      setloading(false);
       console.error("Error fetching product:", error);
     }
   };
@@ -77,8 +78,39 @@ const ProductDetails = () => {
       addNotification("Login required", "error");
     }
   };
+if (loading) {
+  return (
+    <div>
+      <Navbar />
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div className="text-center">
+          <svg
+            className="animate-spin h-10 w-10 text-pink-500 mx-auto mb-4"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+              fill="none"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8z"
+            />
+          </svg>
+          <h2 className="text-lg text-gray-600">Loading product...</h2>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  if (!product_item) {
+  if (!loading &&!product_item) {
     return (
       <div>
         <Navbar />
@@ -112,7 +144,7 @@ const ProductDetails = () => {
             <img
               src={product_item.product_image}
               alt={product_item.SKU}
-              className="w-full max-w-sm md:max-w-lg h-auto object-cover rounded-xl shadow-lg"
+              className="w-80 h-80 object-cover rounded-xl shadow-lg"
             />
           </div>
 

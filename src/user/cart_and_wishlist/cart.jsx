@@ -10,6 +10,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [loading, setloading] = useState(true);
   const location = useLocation();
   const { id } = location.state || {};
 
@@ -25,12 +26,15 @@ const CartPage = () => {
       const items = data.cart_product_items;
       if (response.ok) {
         setCartItems(items);
+        setloading(false);
         setTotalPrice(
           items.reduce((acc, item) => acc + item.price * item.qty, 0)
         );
         return data.cart_product_items;
       }
+      setloading(false)
     } catch (error) {
+      setloading(false);
       console.error("Error fetching cart items:", error);
       return [];
     }
@@ -78,6 +82,25 @@ const CartPage = () => {
                 Proceed to Checkout
               </button>
             </div>
+          </div>
+        ) : loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, index) => (
+              <div
+                key={index}
+                className="border p-4 rounded-lg shadow-md animate-pulse space-y-3"
+              >
+                <div className="w-full h-48 bg-gray-300 rounded-lg"></div>
+                <div className="h-4 bg-gray-300 rounded w-3/4 mt-2"></div>
+                <div className="h-3 bg-gray-200 rounded w-full"></div>
+                <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+
+                <div className="flex items-center justify-between mt-3">
+                  <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+                  <div className="h-6 w-6 bg-gray-300 rounded-full"></div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <p className="flex flex-col items-center justify-center col-span-full text-gray-500 py-10">
