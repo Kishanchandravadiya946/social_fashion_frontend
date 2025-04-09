@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../component/navbar";
 import { FaRegHeart, FaHeart, FaShoppingBag, FaBoxOpen } from "react-icons/fa";
-import { addToCart } from "../sharedCart/shopping_Cart";
+import { addToCart } from "../sharedCart/shopping_cart";
 import { useNotification } from "../../shared/NotificationContext";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
