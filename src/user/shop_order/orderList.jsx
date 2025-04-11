@@ -26,6 +26,8 @@ const OrdersList = () => {
 
         const data = await response.json();
         setOrders(data);
+        if (response.status == 404) {
+        }
         // console.log(data);
       } catch (err) {
         setError(err.message);
@@ -45,17 +47,32 @@ const OrdersList = () => {
     return (
       <div>
         <Navbar />
-        <p className="flex flex-col items-center justify-center col-span-full text-gray-500 py-10">
-          {/* <FaShoppingCart className="text-gray-400 text-5xl mb-3" /> */}
-          <span className="text-xl font-semibold">{error}</span>
-          <p className="text-gray-400 mt-2">create order and come here !</p>
+        <div className="flex flex-col items-center justify-center col-span-full py-20 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-16 w-16 text-gray-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 3h18l-1 13H4L3 3zm4 16h10a1 1 0 001-1v-1H6v1a1 1 0 001 1z"
+            />
+          </svg>
+          <h2 className="text-xl font-semibold text-gray-600">No Orders Yet</h2>
+          <p className="text-gray-400 mt-2">
+            It looks like you haven't placed any orders yet.
+          </p>
           <button
-            onClick={() => navigate("/login")} // Navigates to shop page
+            onClick={() => navigate("/product")} // Navigates to shop page
             className="mt-4 px-6 py-3 bg-pink-500 text-white font-semibold rounded-lg shadow-md hover:bg-pink-600 transition"
           >
-            Login here
+            Start shopping
           </button>
-        </p>
+        </div>
       </div>
     );
 
@@ -64,7 +81,6 @@ const OrdersList = () => {
       <Navbar />
       <div className="max-w-5xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-4">Your Orders</h2>
-
         {orders.length === 0 ? (
           <p className="text-gray-500">No orders found.</p>
         ) : (

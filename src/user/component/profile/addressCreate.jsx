@@ -69,7 +69,7 @@ export default function AddressCreate({ onClose, onAddressAdded }) {
   };
 
   return (
-    <Modal onClose={onClose} title="Add New Address">
+    <Modal onClose={onClose} title="Add New Address" >
       <div className="max-h-[70vh] overflow-y-auto p-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input

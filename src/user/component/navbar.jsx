@@ -71,10 +71,12 @@ const Navbar = () => {
       {/* Right Side (Cart, Wishlist, Profile, Login) */}
       <div className="hidden md:flex gap-4">
         {user_id && (
-          <FaShoppingCart
+          <button
             onClick={() => navigate("/checkout/cart")}
-            className="text-xl cursor-pointer"
-          />
+            className="border px-4 py-1 rounded-full flex items-center gap-2 hover:bg-black hover:text-white"
+          >
+            <FaShoppingCart className="text-xl cursor-pointer" />
+          </button>
         )}
 
         {user_id && (
@@ -149,13 +151,12 @@ const Navbar = () => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ delay: 0.2 / 2, duration: 0.5 }}
               >
-                <FaShoppingCart
-                  onClick={() => {
-                    navigate("/checkout/cart");
-                    setMenuOpen(false);
-                  }}
-                  className="text-xl cursor-pointer"
-                />
+                <button
+                  onClick={() => navigate("/checkout/cart")}
+                  className="border px-4 py-1 rounded-full flex items-center gap-2 hover:bg-black hover:text-white"
+                >
+                  <FaShoppingCart className="text-xl cursor-pointer" />
+                </button>
               </motion.li>
             )}
             {user_id && (
