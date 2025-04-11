@@ -11,7 +11,7 @@ import { useNotification } from "../../shared/NotificationContext";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const stripe_key_id = import.meta.env.VITE_STRIPE;
 
-const stripePromise = stripe_key_id;
+const stripePromise = loadStripe(stripe_key_id);
 
 const ProceedToCheckout = () => {
   const [shippingAddresses, setShippingAddresses] = useState([]);
