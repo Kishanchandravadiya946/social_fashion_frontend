@@ -70,6 +70,7 @@ const ShoppingCart = ({ cartItems, setCartItems }) => {
         );
         closePopup();
       }
+      closePopup();
     }
   };
   return (

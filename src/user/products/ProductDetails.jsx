@@ -17,7 +17,7 @@ const ProductDetails = () => {
   const { addNotification } = useNotification();
 
   useEffect(() => {
-      fetchProductDetails();
+    fetchProductDetails();
   }, []);
 
   const fetchProductDetails = async () => {
@@ -71,46 +71,56 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = async () => {
-    const result = await addToCart(product_item.id);
-    if (result.success) {
-      addNotification("Item added to cart", "success");
-    } else {
-      addNotification("Login required", "error");
+    try {
+      const result = await addToCart(product_item.id);
+      if (result.success) {
+        addNotification("Item added to cart", "success");
+      } else if (result.status === 400) {
+        addNotification("You reached the limit", "error");
+      } else if (result.status === 409) {
+        addNotification("Not Available stock", "error");
+      } else {
+        addNotification("Login required", "error");
+      }
+    } catch (error) {
+      addNotification("Something went wrong", "error");
+      console.error(error);
     }
   };
-if (loading) {
-  return (
-    <div>
-      <Navbar />
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-        <div className="text-center">
-          <svg
-            className="animate-spin h-10 w-10 text-pink-500 mx-auto mb-4"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-              fill="none"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8z"
-            />
-          </svg>
-          <h2 className="text-lg text-gray-600">Loading product...</h2>
+
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+          <div className="text-center">
+            <svg
+              className="animate-spin h-10 w-10 text-pink-500 mx-auto mb-4"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8z"
+              />
+            </svg>
+            <h2 className="text-lg text-gray-600">Loading product...</h2>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-  if (!loading &&!product_item) {
+  if (!loading && !product_item) {
     return (
       <div>
         <Navbar />

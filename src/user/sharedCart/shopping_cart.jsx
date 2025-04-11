@@ -23,7 +23,7 @@ export const addToCart = async (productItemId, qty) => {
       return { success: true, data };
     } else {
       // console.error("Error:", data.message);
-      return { error: data.message };
+      return { error: data,status:response.status };
     }
   } catch (error) {
     // console.error("Network error:", error);

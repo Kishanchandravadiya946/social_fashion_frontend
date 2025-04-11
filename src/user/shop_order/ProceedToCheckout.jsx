@@ -7,11 +7,11 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutPopup from "./CheckoutForm";
 import { useNotification } from "../../shared/NotificationContext";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const stripePromise = loadStripe(
-  "pk_test_51QxVQKFwvBpwVEgwpQBGGhEStaFQO8grJgrZ8HMSFYYNn8aU85A3HdHKg4pdrbHB20IoDUax7SfR9WvBVWOFN3K700Bww6cmCY"
-);
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const stripe_key_id = import.meta.env.VITE_STRIPE;
+
+const stripePromise = stripe_key_id;
 
 const ProceedToCheckout = () => {
   const [shippingAddresses, setShippingAddresses] = useState([]);
@@ -120,7 +120,7 @@ const ProceedToCheckout = () => {
   // const [clientSecret, setClientSecret] = useState("");
 
   // useEffect(() => {
-    
+
   //   fetch(`${API_BASE_URL}/order/create-payment-intent`, {
   //     method: "POST",
   //     headers: { "Content-Type": "application/json" },
@@ -131,7 +131,7 @@ const ProceedToCheckout = () => {
   // }, []);
 
   const handleCheckout = async () => {
-    if (!selectedAddress ) {
+    if (!selectedAddress) {
       alert("Please select a shipping address and payment method.");
       return;
     }
@@ -161,7 +161,7 @@ const ProceedToCheckout = () => {
       const data = await response.json();
       if (response.ok) {
         // alert("Order placed successfully!");
-        addNotification("order Success 🎉","success");
+        addNotification("order Success 🎉", "success");
         navigate("/");
       } else {
         addNotification("order not proceed", "error");
